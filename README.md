@@ -1,4 +1,4 @@
-Nepal Korea Student Hub is a free and open-source platform designed to centralize essential information for Nepali students living in South Korea.
+KoreaSathi is a free and open-source Student Hub platform designed to centralize essential information for Nepali students living in South Korea.
 
 The purpose of the project is to reduce confusion, misinformation, and stress by organizing important student resources into one trusted and easy-to-navigate platform.
 
