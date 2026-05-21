@@ -36,4 +36,29 @@ document.addEventListener('DOMContentLoaded', () => {
     dropdownMenu.classList.remove('active');
   });
 
+  // Load work permit PDF preview on homepage if wrapper exists
+  const pdfWrapper = document.getElementById('workPermitPdf');
+  if(pdfWrapper){
+    const pdfPath = `${rootPrefix}public/guides/work_permit/work_permit.pdf`;
+    // Check if PDF exists
+    fetch(pdfPath, { method: 'HEAD' }).then(res=>{
+      if(res.ok){
+        pdfWrapper.innerHTML = `
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <iframe src="${pdfPath}#view=FitH" style="width:360px;height:420px;border:0;border-radius:6px;overflow:hidden"></iframe>
+            <div style="flex:1">
+              <h3 style="margin:0 0 8px">How to Make a Work Permit</h3>
+              <p style="color:#666;margin:0">Step-by-step HiKorea guide for international students in Korea. You can download or open the full PDF.</p>
+              <p style="margin-top:12px"><a href="${pdfPath}" class="section-link" target="_blank">Open PDF</a> • <a href="${pdfPath}" download class="section-link">Download</a></p>
+            </div>
+          </div>
+        `;
+      } else {
+        pdfWrapper.innerHTML = '<p>No PDF found. Place your file at <strong>public/guides/workPermit/work_permit.pdf</strong> to display it here.</p>';
+      }
+    }).catch(()=>{
+      pdfWrapper.innerHTML = '<p>Unable to check for PDF. Place your file at <strong>public/guides/workPermit/work_permit.pdf</strong>.</p>';
+    });
+  }
+
 });

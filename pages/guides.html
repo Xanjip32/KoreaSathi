@@ -5,14 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guides | KoreaSathi.com</title>
   <link rel="stylesheet" href="../src/css/styles.css">
+  <link rel="stylesheet" href="../src/css/guides.css">
   <script src="../src/js/main.js" defer></script>
-  <style>
-    .search-row { display:flex; gap:12px; align-items:center; margin-bottom:18px; }
-    .search-row input, .search-row select { padding:8px 10px; font-size:1rem; }
-    .guides-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
-    .guide-card { border:1px solid #eee; padding:12px; border-radius:6px; background:#fff; }
-    .guide-meta { font-size:0.9rem; color:#666; margin-top:8px; }
-  </style>
 </head>
 <body class="guides-page">
   <nav class="navbar">
@@ -45,7 +39,11 @@
     <section class="guides-hero">
       <p class="section-kicker">Guides</p>
       <h1>Comprehensive guides for students in Korea</h1>
-      <p>Search, sort, and browse categorized guides. Data will be loadable from an external JSON or database later.</p>
+    </section>
+
+    <section class="popular-guides">
+      <h2>Popular Guides</h2>
+      </div>
     </section>
 
     <section class="guides-controls">
@@ -63,69 +61,6 @@
 
   <div data-footer></div>
 
-  <script>
-    (function(){
-      const container = document.getElementById('guidesContainer');
-      const searchInput = document.getElementById('guidesSearch');
-      const sortSelect = document.getElementById('guidesSort');
-
-      // Data source: set window.GUIDES_JSON_URL = 'https://raw.githubusercontent.com/USER/REPO/main/path/guides.json'
-      // or add data-json-url attribute to <body> like: <body data-json-url="...">
-      const pageJsonUrl = window.GUIDES_JSON_URL || document.body.dataset.jsonUrl || '';
-
-      const sampleGuides = [
-        {id:1, title:'Before You Go', desc:'Checklist, documents, and visa basics', date:'2026-05-01', views:1200, category:'preparation'},
-        {id:2, title:'Arriving in Korea', desc:'Airport tips, SIM, and transport', date:'2026-04-20', views:900, category:'arrival'},
-        {id:3, title:'Settling In', desc:'Housing, ARC, banking, insurance', date:'2026-03-15', views:1500, category:'settling'},
-        {id:4, title:'Jobs & Work Rules', desc:'Part-time jobs, permits, rights', date:'2026-02-10', views:2100, category:'work'}
-      ];
-
-      let guidesData = sampleGuides.slice();
-
-      function render(items){
-        container.innerHTML = items.map(g=>`
-          <article class="guide-card">
-            <h3>${escapeHtml(g.title)}</h3>
-            <p>${escapeHtml(g.desc)}</p>
-            <div class="guide-meta">${new Date(g.date).toLocaleDateString()} • ${g.views || 0} views</div>
-            <a href="../pages/guides.html#guide-${g.id}" class="section-link" style="margin-top:8px;display:inline-block">View guide</a>
-          </article>
-        `).join('');
-      }
-
-      function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]; }); }
-
-      function applyFilters(){
-        const q = searchInput.value.trim().toLowerCase();
-        let filtered = guidesData.filter(g=> (g.title||'').toLowerCase().includes(q) || (g.desc||'').toLowerCase().includes(q));
-        const sort = sortSelect.value;
-        if(sort === 'latest') filtered.sort((a,b)=> new Date(b.date)-new Date(a.date));
-        if(sort === 'popular') filtered.sort((a,b)=> (b.views||0) - (a.views||0));
-        render(filtered);
-      }
-
-      function useData(d){
-        if(Array.isArray(d)) { guidesData = d; applyFilters(); }
-      }
-
-      if(pageJsonUrl){
-        fetch(pageJsonUrl).then(r=>{
-          if(!r.ok) throw new Error('Network response not ok');
-          return r.json();
-        }).then(json=>{
-          useData(json);
-        }).catch(err=>{
-          console.warn('Failed to load guides JSON, using sample data', err);
-          useData(sampleGuides);
-        });
-      } else {
-        useData(sampleGuides);
-      }
-
-      searchInput.addEventListener('input', applyFilters);
-      sortSelect.addEventListener('change', applyFilters);
-
-    })();
-  </script>
+  <script src="../src/js/guides.js" defer></script>
 </body>
 </html>

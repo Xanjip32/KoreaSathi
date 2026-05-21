@@ -1,0 +1,9 @@
+.guides-hero { background:linear-gradient(135deg, rgba(26,31,46,0.5) 0%, rgba(45,55,72,0.5) 100%), url('/public/assets/images/guides_bg.png'); background-size:cover; background-position:center; background-attachment:fixed; position:relative; padding:100px 50px; color:#fff; text-align:center; min-height:450px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.guides-hero h1 { font-size:3rem; margin:0 0 25px 0; }
+.guides-hero p { font-size:1.2rem; max-width:700px; margin:0; }
+.search-row { display:flex; gap:16px; align-items:center; margin-bottom:24px; }
+.search-row input, .search-row select { padding:10px 12px; font-size:1.1rem; border-radius:8px; border:1px solid #ddd; }
+.guides-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
+.guide-card { border:1px solid #ddd; padding:16px; border-radius:10px; background:#f9f9f9; box-shadow:0 4px 8px rgba(0,0,0,0.1); transition:transform 0.3s, box-shadow 0.3s; }
+.guide-card:hover { transform:translateY(-4px); box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+.guide-meta { font-size:1rem; color:#555; margin-top:10px; }

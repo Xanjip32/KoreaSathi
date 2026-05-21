@@ -1,137 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Videos | KoreaSathi.com</title>
-	<link rel="stylesheet" href="../src/css/styles.css">
-	<script src="../src/js/main.js" defer></script>
-	<style>
-		.controls { display:flex; gap:12px; align-items:center; margin-bottom:18px; }
-		.controls input, .controls select { padding:8px 10px; font-size:1rem; }
-		.videos-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
-		.video-card { border:1px solid #eee; border-radius:6px; overflow:hidden; background:#fff; }
-		.video-thumb { height:120px; background:#ddd; display:flex; align-items:center; justify-content:center; font-weight:600; }
-		.video-card .meta { padding:8px; font-size:0.9rem; color:#555; }
-		.section-row { margin-top:28px; }
-	</style>
+ 	<meta charset="UTF-8">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 	<title>Videos | KoreaSathi.com</title>
+ 	<link rel="stylesheet" href="../src/css/styles.css">
+ 	<link rel="stylesheet" href="../src/css/videos.css">
+ 	<script src="../src/js/main.js" defer></script>
 </head>
 <body class="videos-page">
-	<nav class="navbar">
-		<div class="nav-left">
-			<div class="menu-icon" id="hamburger">&#9776;</div>
-			<div class="dropdown-menu" id="dropdownMenu">
-				<a href="about.html">About</a>
-				<a href="contact.html">Contact</a>
-				<a href="guides.html">Guides</a>
-				<a href="videos.html">Videos</a>
-				<a href="community.html">Community</a>
-				<a href="https://github.com/Xanjip32/KoreaSathi/tree/main" target="_blank">GitHub</a>
-			</div>
-			<a href="../index.html" class="logo">KoreaSathi</a>
-		</div>
+ 	<nav class="navbar">
+ 		<div class="nav-left">
+ 			<div class="menu-icon" id="hamburger">&#9776;</div>
+ 			<div class="dropdown-menu" id="dropdownMenu">
+ 				<a href="about.html">About</a>
+ 				<a href="contact.html">Contact</a>
+ 				<a href="guides.html">Guides</a>
+ 				<a href="videos.html">Videos</a>
+ 				<a href="community.html">Community</a>
+ 				<a href="https://github.com/Xanjip32/KoreaSathi/tree/main" target="_blank">GitHub</a>
+ 			</div>
+ 			<a href="../index.html" class="logo">KoreaSathi</a>
+ 		</div>
 
-		<div class="nav-right">
-			<a href="about.html">About</a>
-			<a href="guides.html">Guides</a>
-			<a href="videos.html">Videos</a>
-			<a href="contact.html">Contact</a>
-			<a href="community.html">Community</a>
-			<a href="https://github.com/Xanjip32/KoreaSathi/tree/main" target="_blank">
-				<img src="../public/assets/icons/github.svg" alt="GitHub Icon" width="24" height="24">
-			</a>
-		</div>
-	</nav>
+ 		<div class="nav-right">
+ 			<a href="about.html">About</a>
+ 			<a href="guides.html">Guides</a>
+ 			<a href="videos.html">Videos</a>
+ 			<a href="contact.html">Contact</a>
+ 			<a href="community.html">Community</a>
+ 			<a href="https://github.com/Xanjip32/KoreaSathi/tree/main" target="_blank">
+ 				<img src="../public/assets/icons/github.svg" alt="GitHub Icon" width="24" height="24">
+ 			</a>
+ 		</div>
+ 	</nav>
 
-	<main class="videos-main">
-		<section class="videos-hero">
-			<p class="section-kicker">Videos & Shorts</p>
-			<h1>YouTube and TikTok resources</h1>
-			<p>Search and filter videos. Data can be replaced later by loading a JSON or database feed.</p>
-		</section>
+ 	<main class="videos-main">
+ 		<section class="videos-hero">
+ 			<div class="videos-hero-content">
+ 				<div class="videos-hero-badge">VIDEOS</div>
+ 				<h1>Watch. Learn.<br><span style="color:#ff5252">Get Inspired.</span></h1>
+ 				<p>Helpful videos and real stories for Nepali students in Korea. Learn, prepare, and thrive in your journey.</p>
+ 				<div class="videos-search-wrapper">
+ 					<input id="videoSearch" type="text" placeholder="Search videos..." aria-label="Search videos" class="videos-search-input">
+ 					<button class="videos-search-btn">🔍</button>
+ 				</div>
+ 			</div>
+ 		</section>
 
-		<section class="videos-controls">
-			<div class="controls">
-				<input id="videoSearch" placeholder="Search videos by title or description" aria-label="Search videos">
-				<select id="videoSort" aria-label="Sort videos">
-					<option value="latest">Latest</option>
-					<option value="popular">Popular</option>
-				</select>
-			</div>
-		</section>
+ 		<section class="videos-controls">
+ 			<div class="controls">
+ 				<select id="videoSort" aria-label="Sort videos" class="sort-select">
+ 					<option value="latest">Latest</option>
+ 					<option value="popular">Popular</option>
+ 				</select>
+ 			</div>
+ 		</section>
 
-		<section class="section-row" aria-labelledby="yt-heading">
-			<h2 id="yt-heading">YouTube</h2>
-			<div id="youtubeContainer" class="videos-grid" aria-live="polite"></div>
-		</section>
+ 		<section class="video-preview">
+ 			<div class="video-box">
+ 			  </a>
+ 			  <iframe width="300" height="200" src="https://www.youtube.com/embed/pSEy4mLbjV4?si=rbHej1p1Tbcbw-zf" title="How to Study in Korea for Free" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="embedded-video"></iframe>
+ 			</div>
+ 		</section>
+ 	</main>
 
-		<section class="section-row" aria-labelledby="tt-heading">
-			<h2 id="tt-heading">TikTok</h2>
-			<div id="tiktokContainer" class="videos-grid" aria-live="polite"></div>
-		</section>
-	</main>
+ 	<div data-footer></div>
 
-	<div data-footer></div>
-
-	<script>
-		(function(){
-			const searchEl = document.getElementById('videoSearch');
-			const sortEl = document.getElementById('videoSort');
-			const ytContainer = document.getElementById('youtubeContainer');
-			const ttContainer = document.getElementById('tiktokContainer');
-
-			// Data source: set window.VIDEOS_JSON_URL = 'https://raw.githubusercontent.com/USER/REPO/main/path/videos.json'
-			// or add data-json-url attribute to <body> like: <body data-json-url="...">
-			const pageJsonUrl = window.VIDEOS_JSON_URL || document.body.dataset.jsonUrl || '';
-
-			const sample = [
-				{id:'y1', platform:'youtube', title:'Work permit basics', desc:'Short explainer on permits', date:'2026-05-10', views:3400, url:'#'},
-				{id:'y2', platform:'youtube', title:'Finding part-time jobs', desc:'Where and how to apply', date:'2026-04-22', views:2100, url:'#'},
-				{id:'t1', platform:'tiktok', title:'Quick student tips', desc:'30s life-hacks', date:'2026-05-05', views:7800, url:'#'},
-				{id:'t2', platform:'tiktok', title:'Life in Korea shorts', desc:'Daily routines and costs', date:'2026-03-30', views:4200, url:'#'}
-			];
-
-			let videosData = sample.slice();
-
-			function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]; }); }
-
-			function renderList(items, container){
-				if(!items.length){ container.innerHTML = '<p>No results found.</p>'; return; }
-				container.innerHTML = items.map(v=>`
-					<article class="video-card">
-						<div class="video-thumb">${escapeHtml(v.platform.toUpperCase())}</div>
-						<div style="padding:8px">
-							<h3 style="margin:0 0 6px">${escapeHtml(v.title)}</h3>
-							<p style="margin:0 0 8px; color:#666">${escapeHtml(v.desc)}</p>
-							<div class="meta">${new Date(v.date).toLocaleDateString()} • ${v.views || 0} views</div>
-							<a href="${escapeHtml(v.url || '#')}" class="section-link" style="margin-top:8px;display:inline-block">Watch</a>
-						</div>
-					</article>
-				`).join('');
-			}
-
-			function applyFilters(){
-				const q = (searchEl.value || '').trim().toLowerCase();
-				const sort = sortEl.value;
-				let filtered = videosData.filter(v=> (v.title||'').toLowerCase().includes(q) || (v.desc||'').toLowerCase().includes(q));
-				if(sort === 'latest') filtered.sort((a,b)=> new Date(b.date) - new Date(a.date));
-				if(sort === 'popular') filtered.sort((a,b)=> (b.views||0) - (a.views||0));
-				renderList(filtered.filter(v=> v.platform === 'youtube'), ytContainer);
-				renderList(filtered.filter(v=> v.platform === 'tiktok'), ttContainer);
-			}
-
-			function useData(d){ if(Array.isArray(d)){ videosData = d; applyFilters(); } }
-
-			if(pageJsonUrl){
-				fetch(pageJsonUrl).then(r=>{ if(!r.ok) throw new Error('Network error'); return r.json(); })
-				.then(json=> useData(json))
-				.catch(err=>{ console.warn('Failed to load videos JSON, using sample data', err); useData(sample); });
-			} else { useData(sample); }
-
-			searchEl.addEventListener('input', applyFilters);
-			sortEl.addEventListener('change', applyFilters);
-
-		})();
-	</script>
+ 	<script src="../src/js/videos.js" defer></script>
 </body>
 </html>
