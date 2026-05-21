@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap');
+
 html,
 body {
   margin: 0;
   padding: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 .navbar {
@@ -9,7 +12,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem clamp(4rem, 8vw, 6rem) 1rem clamp(1.5rem, 5vw, 2rem);
-  font-family: 'Inter', 'Poppins', sans-serif;
+  font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
 }
 
@@ -25,7 +28,7 @@ body {
 .logo {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #F9FAF8;
   text-decoration: none;
   letter-spacing: -0.5px;
 }
@@ -137,9 +140,9 @@ body {
   background-image: 
     linear-gradient(
       to right,
-      rgba(2, 6, 23, 0.92) 28%,
-      rgba(2, 6, 23, 0.68) 48%,
-      rgba(2, 6, 23, 0.22) 70%,
+      rgba(31, 41, 55, 0.92) 28%,
+      rgba(31, 41, 55, 0.68) 48%,
+      rgba(31, 41, 55, 0.22) 70%,
       transparent 100%
     ),
     url('../../public/assets/images/hero_background.png');
@@ -148,15 +151,14 @@ body {
 .hero-content {
   max-width: 560px;
   color: #fff;
-  font-family: 'Inter', 'Poppins', sans-serif;
 }
 
 .hero-title {
   font-size: clamp(2.8rem, 6vw, 5rem);
   line-height: 1.08;
-  font-weight: 750;
+  font-weight: 900;
   letter-spacing: -2px;
-  color: #ffffff;
+  color: #F9FAF8;
 }
 
 .hero-title span {
@@ -167,28 +169,28 @@ body {
   margin-top: 1.2rem;
   font-size: 1.08rem;
   line-height: 1.7;
-  color: rgba(255,255,255,0.72);
+  color: #E5E7EB;
   max-width: 520px;
   font-weight: 400;
 }
 
 .hero-btn {
   margin-top: 2rem;
-  background: linear-gradient(135deg, #2563EB, #3B82F6);
-  color: white;
+  background: #3882F6;
+  color: #F9FAF8;
   border: none;
   padding: 1rem 2rem;
   border-radius: 14px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(37,99,235,0.35);
+  box-shadow: 0 10px 25px rgba(56,130,246,0.25);
   transition: 0.25s ease;
 }
 
 .hero-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(37,99,235,0.45);
+  box-shadow: 0 14px 30px rgba(56,130,246,0.32);
 }
 
 .home-page {
@@ -225,7 +227,7 @@ body {
 
 .section-kicker {
   margin: 0 0 0.45rem;
-  color: #2f7df6;
+  color: #3882F6;
   font-size: 0.78rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -235,7 +237,7 @@ body {
 .section-title-row h2,
 .popular-guide-copy h2 {
   margin: 0;
-  color: #071427;
+  color: #1F2937;
   font-size: clamp(1.8rem, 3vw, 2.55rem);
   line-height: 1.1;
   font-weight: 900;
@@ -261,9 +263,9 @@ body {
   justify-content: center;
   min-height: 40px;
   padding: 0 1rem;
-  border: 1px solid #2f7df6;
+  border: 1px solid #3882F6;
   border-radius: 8px;
-  color: #2f7df6;
+  color: #3882F6;
   font-weight: 800;
   text-decoration: none;
   white-space: nowrap;
@@ -298,7 +300,7 @@ body {
   height: 42px;
   border-radius: 8px;
   background: #e8f1ff;
-  color: #2f7df6;
+  color: #3882F6;
   font-weight: 900;
 }
 
@@ -325,7 +327,7 @@ body {
   padding: 0 0.75rem;
   border-radius: 999px;
   background: #eef4ff;
-  color: #2f7df6;
+  color: #3882F6;
   font-size: 0.78rem;
   font-weight: 900;
 }
@@ -376,7 +378,7 @@ body {
   width: 100%;
   margin-top: 5rem;
   padding: 4rem max(1.5rem, calc((100% - 1120px) / 2)) 5rem;
-  background: #071427;
+  background: #1F2937;
   box-sizing: border-box;
 }
 
@@ -397,6 +399,19 @@ body {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
+}
+
+/* Guides and Videos page components */
+.search-row, .controls { display:flex; gap:12px; align-items:center; margin-bottom:18px; }
+.search-row input, .controls input, .search-row select, .controls select { padding:8px 10px; font-size:1rem; border:1px solid #d6dbe6; border-radius:8px; }
+.guides-grid, .videos-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+.guide-card, .video-card { border:1px solid #eee; padding:12px; border-radius:8px; background:#fff; box-shadow: 0 6px 18px rgba(9,26,49,0.04); }
+.video-thumb { height:120px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-weight:700; color:#0f172a; }
+.guide-meta, .video-card .meta { font-size:0.9rem; color:#6b7280; margin-top:8px; }
+.section-row { margin-top:28px; }
+
+@media (max-width: 720px) {
+  .journey-shell-grid, .video-shell-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 .video-shell-card {
@@ -471,7 +486,9 @@ body {
   padding-top: 0;
 }
 
-.about-hero {
+.about-hero,
+.guides-hero,
+.videos-hero {
   min-height: 100vh;
   padding: 8rem clamp(1.5rem, 6vw, 6rem) 5rem;
   background:
@@ -943,9 +960,8 @@ body {
 }
 
 .site-footer {
-  background: #071427;
+  background: #1F2937;
   color: #ffffff;
-  font-family: 'Inter', 'Poppins', sans-serif;
 }
 
 .footer-content {
