@@ -145,7 +145,7 @@ body {
       rgba(31, 41, 55, 0.22) 70%,
       transparent 100%
     ),
-    url('../../public/assets/images/hero_background.png');
+    url('../../assets/images/hero_background.png');
 }
 
 .hero-content {
@@ -699,7 +699,7 @@ body {
       rgba(2, 6, 23, 0.88) 48%,
       rgba(11, 43, 74, 0.82) 100%
     ),
-    url('../../public/assets/images/hero_background.png');
+    url('../../assets/images/hero_background.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -716,7 +716,7 @@ body {
       rgba(2, 6, 23, 0.88) 48%,
       rgba(11, 43, 74, 0.82) 100%
     ),
-    url('../../public/assets/images/hero_background.png');
+    url('../../assets/images/hero_background.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

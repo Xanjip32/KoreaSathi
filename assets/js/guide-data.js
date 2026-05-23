@@ -11,8 +11,8 @@ window.KOREASATHI_GUIDES = [
     readTime: '15 min read',
     badge: 'PDF guide',
     type: 'pdf',
-    viewUrl: '/public/guides/Nepali_Student_Korea_Guide_smallpdf.pdf',
-    downloadUrl: '/public/guides/Nepali_Student_Korea_Guide_smallpdf.pdf'
+    viewUrl: '/assets/guides/Nepali_Student_Korea_Guide_smallpdf.pdf',
+    downloadUrl: '/assets/guides/Nepali_Student_Korea_Guide_smallpdf.pdf'
   },
   {
     id: 2,
@@ -26,8 +26,8 @@ window.KOREASATHI_GUIDES = [
     readTime: '10 min read',
     badge: 'PDF guide',
     type: 'pdf',
-    viewUrl: '/public/guides/Nepali_Students_Korea_Housing_Guide.pdf',
-    downloadUrl: '/public/guides/Nepali_Students_Korea_Housing_Guide.pdf'
+    viewUrl: '/assets/guides/Nepali_Students_Korea_Housing_Guide.pdf',
+    downloadUrl: '/assets/guides/Nepali_Students_Korea_Housing_Guide.pdf'
   },
   {
     id: 3,
@@ -41,8 +41,8 @@ window.KOREASATHI_GUIDES = [
     readTime: '12 min read',
     badge: 'PDF guide',
     type: 'pdf',
-    viewUrl: '/public/guides/Nepali_Student_Korea_Immigration_Guide.pdf',
-    downloadUrl: '/public/guides/Nepali_Student_Korea_Immigration_Guide.pdf'
+    viewUrl: '/assets/guides/Nepali_Student_Korea_Immigration_Guide.pdf',
+    downloadUrl: '/assets/guides/Nepali_Student_Korea_Immigration_Guide.pdf'
   },
   {
     id: 4,
@@ -56,8 +56,8 @@ window.KOREASATHI_GUIDES = [
     readTime: '11 min read',
     badge: 'PDF guide',
     type: 'pdf',
-    viewUrl: '/public/guides/Nepali_Student_Korea_Support_Resources.pdf',
-    downloadUrl: '/public/guides/Nepali_Student_Korea_Support_Resources.pdf'
+    viewUrl: '/assets/guides/Nepali_Student_Korea_Support_Resources.pdf',
+    downloadUrl: '/assets/guides/Nepali_Student_Korea_Support_Resources.pdf'
   },
   {
     id: 5,
@@ -71,8 +71,8 @@ window.KOREASATHI_GUIDES = [
     readTime: '9 min read',
     badge: 'PDF guide',
     type: 'pdf',
-    viewUrl: '/public/guides/Nepali_Students_Korea_PartTime_Jobs_Guide.pdf',
-    downloadUrl: '/public/guides/Nepali_Students_Korea_PartTime_Jobs_Guide.pdf'
+    viewUrl: '/assets/guides/Nepali_Students_Korea_PartTime_Jobs_Guide.pdf',
+    downloadUrl: '/assets/guides/Nepali_Students_Korea_PartTime_Jobs_Guide.pdf'
   },
   {
     id: 6,
@@ -86,7 +86,7 @@ window.KOREASATHI_GUIDES = [
     readTime: '5 min read',
     badge: 'PDF guide',
     type: 'pdf',
-    viewUrl: '/public/guides/work_permit/work_permit.pdf',
-    downloadUrl: '/public/guides/work_permit/work_permit.pdf'
+    viewUrl: '/assets/guides/work_permit/work_permit.pdf',
+    downloadUrl: '/assets/guides/work_permit/work_permit.pdf'
   }
 ];

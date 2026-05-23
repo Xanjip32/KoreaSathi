@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load work permit PDF preview on homepage if wrapper exists
   const pdfWrapper = document.getElementById('workPermitPdf');
   if(pdfWrapper){
-    const pdfPath = `${rootPrefix}public/guides/work_permit/work_permit.pdf`;
+    const pdfPath = `${rootPrefix}assets/guides/work_permit/work_permit.pdf`;
     // Check if PDF exists
     fetch(pdfPath, { method: 'HEAD' }).then(res=>{
       if(res.ok){
@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `;
       } else {
-        pdfWrapper.innerHTML = '<p>No PDF found. Place your file at <strong>public/guides/workPermit/work_permit.pdf</strong> to display it here.</p>';
+        pdfWrapper.innerHTML = '<p>No PDF found. Place your file at <strong>assets/guides/workPermit/work_permit.pdf</strong> to display it here.</p>';
       }
     }).catch(()=>{
-      pdfWrapper.innerHTML = '<p>Unable to check for PDF. Place your file at <strong>public/guides/workPermit/work_permit.pdf</strong>.</p>';
+      pdfWrapper.innerHTML = '<p>Unable to check for PDF. Place your file at <strong>assets/guides/workPermit/work_permit.pdf</strong>.</p>';
     });
   }
 

@@ -1,4 +1,4 @@
-.videos-hero { background:linear-gradient(135deg, rgba(26,31,46,0.7) 0%, rgba(45,55,72,0.7) 100%), url('/public/assets/images/video_bg.png'); background-size:cover; background-position:center; background-attachment:fixed; position:relative; padding:80px 40px; color:#fff; text-align:left; min-height:500px; display:flex; align-items:center; }
+.videos-hero { background:linear-gradient(135deg, rgba(26,31,46,0.7) 0%, rgba(45,55,72,0.7) 100%), url('/assets/images/video_bg.png'); background-size:cover; background-position:center; background-attachment:fixed; position:relative; padding:80px 40px; color:#fff; text-align:left; min-height:500px; display:flex; align-items:center; }
 .videos-hero::before { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.1); z-index:1; }
 .videos-hero-content { position:relative; z-index:2; max-width:500px; }
 .videos-hero-badge { display:inline-block; background:#ff5252; color:#fff; padding:8px 16px; border-radius:4px; font-size:0.85rem; font-weight:700; letter-spacing:1px; margin-bottom:16px; }
