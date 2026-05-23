@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KoreaSathi.com</title>
   <link rel="stylesheet" href="src/css/styles.css">
-  <script src="src/js/main.js"></script>
+  <link rel="stylesheet" href="src/css/guides.css">
+  <script src="src/js/main.js" defer></script>
+  <script src="src/js/guide-data.js" defer></script>
+  <script src="src/js/home-guides.js" defer></script>
 </head>
 <body class="home-page">
 <nav class="navbar">
@@ -40,7 +43,7 @@
 <section class="hero">
 
     <div class="hero-content">
-    <h1 class="hero-title">Everything Students <br>need in Korea</h1>
+    <h1 class="hero-title">Everything Students <br>Need in Korea</h1>
     <p class="hero-subtitle">Helping students in Korea find part-time jobs, handle work permits, navigate immigration, and settle in with confidence..</p>
     <a class="hero-btn" href="pages/guides.html">Explore Guides</a>
   </div>
@@ -58,11 +61,8 @@
       <a href="pages/guides.html" class="section-link">View more</a>
     </div>
     
-    <div class="guide-promo" style="margin-top:18px; padding:16px; background:#f9f9f9; border-radius:8px; border-left:4px solid #0b74de;">
-      <p class="section-kicker">Featured Guide</p>
-      <h3 style="margin:4px 0 6px">How to Make a Work Permit</h3>
-      <p style="margin:0 0 12px;color:#666">Step-by-step HiKorea guide for international students in Korea.</p>
-      <a href="public/guides/work_permit/work_permit.pdf" class="section-link" target="_blank">Open PDF Guide</a>
+    <div class="guide-promo" style="margin-top:18px; padding:0; background:transparent; border-radius:12px; border-left:none; position:relative;">
+      <div id="homeGuidesContainer" class="guides-grid" style="margin-top: 24px;"></div>
     </div>
 
   </section>
@@ -83,13 +83,19 @@
   </section>
 
   <section class="video-preview">
-    <div class="video-box">
-      <iframe width="300" height="200" src="https://www.youtube.com/embed/pSEy4mLbjV4?si=rbHej1p1Tbcbw-zf" title="How to Study in Korea for Free" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="embedded-video"></iframe>
-    </div>
+    <article class="video-card">
+      <div class="video-box">
+        <iframe width="300" height="200" src="https://www.youtube.com/embed/pSEy4mLbjV4?si=rbHej1p1Tbcbw-zf" title="How to Study in Korea for Free" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="embedded-video"></iframe>
+      </div>
+      <h3>How to Study in Korea for Free</h3>
+      <p class="meta">A quick video guide for Nepali students on studying and settling in Korea.</p>
+    </article>
   </section>
 </main>
 
 <div data-footer></div>
+
+<script src="src/js/home-guides.js"></script>
 
 </body>
 </html>

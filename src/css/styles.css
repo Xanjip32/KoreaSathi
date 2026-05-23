@@ -405,7 +405,10 @@ body {
 .search-row, .controls { display:flex; gap:12px; align-items:center; margin-bottom:18px; }
 .search-row input, .controls input, .search-row select, .controls select { padding:8px 10px; font-size:1rem; border:1px solid #d6dbe6; border-radius:8px; }
 .guides-grid, .videos-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
-.guide-card, .video-card { border:1px solid #eee; padding:12px; border-radius:8px; background:#fff; box-shadow: 0 6px 18px rgba(9,26,49,0.04); }
+.guide-card, .video-card { border:1px solid #eee; padding:18px; border-radius:16px; background:#fff; box-shadow: 0 6px 18px rgba(9,26,49,0.04); max-width:720px; margin:0 auto; }
+.video-box { margin-bottom:16px; border-radius:14px; overflow:hidden; }
+.video-card h3 { margin:0 0 10px 0; font-size:1.4rem; color:#111827; }
+.video-card .meta { font-size:0.95rem; color:#6b7280; margin-top:0; }
 .video-thumb { height:120px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-weight:700; color:#0f172a; }
 .guide-meta, .video-card .meta { font-size:0.9rem; color:#6b7280; margin-top:8px; }
 .section-row { margin-top:28px; }

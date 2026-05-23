@@ -1,10 +1,6 @@
 ﻿(function(){
-  const container = document.getElementById('guidesContainer');
-  const searchInput = document.getElementById('guidesSearch');
-  const sortSelect = document.getElementById('guidesSort');
-
-  const defaultGuides = Array.isArray(window.KOREASATHI_GUIDES) ? window.KOREASATHI_GUIDES.slice() : [];
-  let guidesData = defaultGuides.slice();
+  const container = document.getElementById('homeGuidesContainer');
+  const guides = Array.isArray(window.KOREASATHI_GUIDES) ? window.KOREASATHI_GUIDES.slice() : [];
 
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]; }); }
 
@@ -27,11 +23,14 @@
     return normalized;
   }
 
-  function render(items){
-    container.innerHTML = items.map(g=>{
+  function renderHomeGuides(){
+    const sorted = guides.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+    const topFour = sorted.slice(0, 4);
+
+    container.innerHTML = topFour.map(g => {
       const badge = g.badge ? `<span class="guide-badge">${escapeHtml(g.badge)}</span>` : '';
-      const viewUrl = normalizeUrl(g.viewUrl || '#');
-      const downloadUrl = normalizeUrl(g.downloadUrl || viewUrl);
+      const viewUrl = normalizeUrl(g.viewUrl || g.pdfPath || '#');
+      const downloadUrl = normalizeUrl(g.downloadUrl || g.pdfPath || viewUrl);
       const pagesLabel = g.pages || 'PDF';
 
       return `
@@ -49,24 +48,9 @@
           <a href="${escapeHtml(downloadUrl)}" class="guide-btn guide-btn-secondary" download>Download</a>
         </div>
       </article>
-    `}).join('');
+      `;
+    }).join('');
   }
 
-  function applyFilters(){
-    const q = searchInput.value.trim().toLowerCase();
-    let filtered = guidesData.filter(g=> (g.title||'').toLowerCase().includes(q) || (g.desc||'').toLowerCase().includes(q));
-    const sort = sortSelect.value;
-    if(sort === 'latest') filtered.sort((a,b)=> new Date(b.date)-new Date(a.date));
-    if(sort === 'popular') filtered.sort((a,b)=> (b.views||0) - (a.views||0));
-    render(filtered);
-  }
-
-  function useData(d){
-    if(Array.isArray(d)) { guidesData = d.slice(); applyFilters(); }
-  }
-
-  useData(defaultGuides);
-
-  searchInput.addEventListener('input', applyFilters);
-  sortSelect.addEventListener('change', applyFilters);
+  renderHomeGuides();
 })();
