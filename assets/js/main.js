@@ -1,46 +1,86 @@
 document.addEventListener('DOMContentLoaded', () => {
   const footerTarget = document.querySelector('[data-footer]');
+  const navbarTarget = document.querySelector('[data-navbar]');
   const isPagesPath = window.location.pathname.includes('/pages/');
   const rootPrefix = isPagesPath ? '../' : '';
 
+  function processLinks(container) {
+    if (!container) return;
+
+    // Handle root links (index.html)
+    container.querySelectorAll('[data-root-link]').forEach((link) => {
+      link.href = `${rootPrefix}index.html`;
+    });
+
+    // Handle page links (about.html, etc.)
+    container.querySelectorAll('[data-page-link]').forEach((link) => {
+      const page = link.dataset.pageLink;
+      link.href = isPagesPath ? page : `pages/${page}`;
+    });
+
+    // Handle asset links (images, icons)
+    container.querySelectorAll('[data-asset-link]').forEach((asset) => {
+      const path = asset.dataset.assetLink;
+      if (asset.tagName === 'IMG') {
+        asset.src = `${rootPrefix}assets/${path}`;
+      } else {
+        asset.href = `${rootPrefix}assets/${path}`;
+      }
+    });
+  }
+
+  // Inject Navbar
+  if (navbarTarget) {
+    fetch(`${rootPrefix}partials/navbar.html`)
+      .then((response) => response.text())
+      .then((html) => {
+        navbarTarget.innerHTML = html;
+        processLinks(navbarTarget);
+        initHamburger(); // Re-initialize hamburger events after injection
+      })
+      .catch((err) => console.error('Navbar injection failed:', err));
+  }
+
+  // Inject Footer
   if (footerTarget) {
     fetch(`${rootPrefix}partials/footer.html`)
       .then((response) => response.text())
       .then((html) => {
         footerTarget.innerHTML = html;
-
-        footerTarget.querySelectorAll('[data-root-link]').forEach((link) => {
-          link.href = `${rootPrefix}index.html`;
-        });
-
-        footerTarget.querySelectorAll('[data-page-link]').forEach((link) => {
-          link.href = isPagesPath ? link.dataset.pageLink : `pages/${link.dataset.pageLink}`;
-        });
+        processLinks(footerTarget);
       })
       .catch(() => {
         footerTarget.innerHTML = '';
       });
   }
 
-  const hamburger = document.getElementById('hamburger');
-  const dropdownMenu = document.getElementById('dropdownMenu');
+  function initHamburger() {
+    const hamburger = document.getElementById('hamburger');
+    const dropdownMenu = document.getElementById('dropdownMenu');
 
-  if (!hamburger || !dropdownMenu) return;
+    if (!hamburger || !dropdownMenu) return;
 
-  hamburger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dropdownMenu.classList.toggle('active');
-  });
+    // Remove existing listeners if any (to avoid duplicates)
+    const newHamburger = hamburger.cloneNode(true);
+    hamburger.parentNode.replaceChild(newHamburger, hamburger);
 
-  document.addEventListener('click', () => {
-    dropdownMenu.classList.remove('active');
-  });
+    newHamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('active');
+    });
+
+    document.addEventListener('click', () => {
+      dropdownMenu.classList.remove('active');
+    });
+  }
+
+  // Initial call for case where nav might be hardcoded or already present
+  initHamburger();
 
   // Load work permit PDF preview on homepage if wrapper exists
   const pdfWrapper = document.getElementById('workPermitPdf');
   if(pdfWrapper){
     const pdfPath = `${rootPrefix}assets/guides/work_permit/work_permit.pdf`;
-    // Check if PDF exists
     fetch(pdfPath, { method: 'HEAD' }).then(res=>{
       if(res.ok){
         pdfWrapper.innerHTML = `
@@ -53,11 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
         `;
-      } else {
-        pdfWrapper.innerHTML = '<p>No PDF found. Place your file at <strong>assets/guides/workPermit/work_permit.pdf</strong> to display it here.</p>';
       }
-    }).catch(()=>{
-      pdfWrapper.innerHTML = '<p>Unable to check for PDF. Place your file at <strong>assets/guides/workPermit/work_permit.pdf</strong>.</p>';
     });
   }
 

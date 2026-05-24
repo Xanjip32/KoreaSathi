@@ -1,4 +1,5 @@
-.guides-hero { background:linear-gradient(135deg, rgba(26,31,46,0.5) 0%, rgba(45,55,72,0.5) 100%), url('/assets/images/guides_bg.png'); background-size:cover; background-position:center; background-attachment:fixed; position:relative; padding:100px 50px; color:#fff; text-align:center; min-height:450px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+
+.guides-hero { background:linear-gradient(135deg, rgba(26,31,46,0.5) 0%, rgba(45,55,72,0.5) 100%), url('../images/guides_bg.png'); background-size:cover; background-position:center; position:relative; padding:100px 50px; color:#fff; text-align:center; min-height:450px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
 .guides-hero h1 { font-size:6rem; margin:0 0 25px 0; line-height:1.05; }
 .guides-hero p { font-size:4rem; max-width:700px; margin:0; }
 .search-row { display:flex; gap:16px; align-items:center; margin-bottom:24px; }
