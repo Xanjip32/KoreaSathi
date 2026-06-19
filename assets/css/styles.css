@@ -157,13 +157,22 @@ body {
 }
 
 @media (max-width: 768px) {
+  /* ---- Navbar ---- */
+  .nav-right a:not(:last-child) {
+    display: none;
+  }
+
+  .navbar {
+    padding: 0.75rem 1rem;
+  }
+
   .hero {
     justify-content: center;
     text-align: center;
     padding-top: 80px;
     min-height: 70vh; /* Reduced height for better framing */
     background-position: center top; /* Focus on the top/center of the image */
-    background-image: 
+    background-image:
       linear-gradient(
         to bottom,
         rgba(31, 41, 55, 0.85) 0%,
@@ -175,8 +184,10 @@ body {
 
   .about-hero,
   .guides-hero,
-  .videos-hero {
+  .videos-hero,
+  .organization-page .about-hero {
     min-height: 60vh;
+    padding: 5rem 1.5rem 3rem;
     background-position: center center;
     background-attachment: scroll; /* Fixes "zoomed" issue on iOS/Android */
   }
@@ -1215,6 +1226,317 @@ body {
   margin: 0;
   color: rgba(255, 255, 255, 0.58);
   font-size: 0.9rem;
+}
+
+/* ============================================
+   COMPREHENSIVE MOBILE RESPONSIVE
+   ============================================ */
+
+/* Small phones */
+@media (max-width: 480px) {
+  .dropdown-menu {
+    width: calc(100vw - 2rem);
+    left: 1rem;
+    top: 56px;
+    border-radius: 8px;
+  }
+
+  .dropdown-menu a {
+    padding: 14px 20px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 10vw, 2.8rem);
+    letter-spacing: -1px;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-top: 0.85rem;
+  }
+
+  .hero-btn {
+    padding: 0.85rem 1.6rem;
+    font-size: 0.95rem;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    display: inline-block;
+  }
+
+  .home-section {
+    width: min(100% - 1.5rem, 1120px);
+  }
+
+  .student-journey-section {
+    padding: 2.5rem 0.75rem;
+  }
+
+  .video-section {
+    padding: 2.5rem 0.75rem 3rem;
+    margin-top: 3rem;
+  }
+
+  .popular-guide-section {
+    padding: 3rem 0.75rem;
+    gap: 1.5rem;
+  }
+
+  .section-title-row h2,
+  .popular-guide-copy h2 {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+  }
+
+  .section-title-row p {
+    font-size: 0.92rem;
+  }
+
+  .section-link {
+    min-height: 36px;
+    padding: 0 0.85rem;
+    font-size: 0.88rem;
+  }
+
+  .journey-shell-card {
+    padding: 1rem;
+    min-height: 170px;
+  }
+
+  .guide-preview-card {
+    padding: 1.25rem;
+    min-height: auto;
+  }
+
+  /* About page mobile */
+  .about-hero h1 {
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+  }
+
+  .about-hero p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .about-content {
+    padding: 2.5rem 0.75rem 3rem;
+  }
+
+  .about-card {
+    padding: 1.2rem;
+  }
+
+  .about-card h2 {
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+  }
+
+  .goals-list li {
+    min-height: 60px;
+    padding: 0.85rem 0.85rem 0.85rem 2.2rem;
+    font-size: 0.9rem;
+  }
+
+  .about-open-source a {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  /* Organization page mobile */
+  .organization-content {
+    padding: 2.5rem 0.75rem 3rem;
+    gap: 0.85rem;
+  }
+
+  .organization-card {
+    padding: 1.2rem;
+  }
+
+  .organization-card h3 {
+    font-size: clamp(1.1rem, 4vw, 1.45rem);
+  }
+
+  .organization-details div {
+    padding: 0.75rem;
+  }
+
+  .student-org-card {
+    gap: 1rem;
+  }
+
+  .organization-logo {
+    width: 90px;
+    height: 90px;
+  }
+
+  .organization-actions {
+    flex-direction: column;
+  }
+
+  .organization-actions a {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Contact page mobile */
+  .contact-main,
+  .community-main {
+    padding: 100px 0.75rem 40px;
+  }
+
+  .contact-card,
+  .community-card {
+    padding: 1.5rem;
+  }
+
+  .contact-profile h1 {
+    font-size: 1.35rem;
+  }
+
+  .contact-link-card {
+    padding: 1rem;
+  }
+
+  .contact-link-card strong {
+    font-size: 1rem;
+  }
+
+  .contact-link-icon {
+    width: 34px;
+    height: 34px;
+    margin-right: 0.75rem;
+  }
+
+  .contact-contribute h2 {
+    font-size: 1.25rem;
+  }
+
+  /* Community page mobile */
+  .community-card h1 {
+    font-size: clamp(1.4rem, 5vw, 1.75rem);
+  }
+
+  .community-links {
+    flex-direction: column;
+  }
+
+  .community-link-pill {
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+
+  /* Guides page mobile */
+  .guides-hero h1 {
+    font-size: 1.6rem;
+  }
+
+  .guides-hero p {
+    font-size: 0.9rem;
+  }
+
+  .guides-grid {
+    gap: 16px;
+  }
+
+  .guide-card-featured {
+    padding: 16px;
+  }
+
+  .guide-card-featured h3 {
+    font-size: 1rem;
+  }
+
+  .guide-actions {
+    gap: 8px;
+  }
+
+  .guide-btn {
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    flex: 1;
+  }
+
+  /* Videos page mobile */
+  .videos-hero h1 {
+    font-size: 1.6rem;
+  }
+
+  .videos-hero p {
+    font-size: 0.95rem;
+  }
+
+  .video-box {
+    max-width: 100%;
+    border-radius: 0;
+  }
+
+  .embedded-video {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16/9;
+    border-radius: 0;
+  }
+
+  /* Footer mobile */
+  .footer-content {
+    gap: 1.5rem;
+  }
+
+  .footer-column {
+    gap: 0.5rem;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: clamp(1.6rem, 9vw, 2rem);
+  }
+
+  .navbar {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .logo {
+    font-size: 1rem;
+  }
+
+  .menu-icon {
+    font-size: 1.2rem;
+  }
+
+  .dropdown-menu {
+    width: 180px;
+    top: 50px;
+  }
+}
+
+/* Touch-friendly improvements for all small screens */
+@media (hover: none) and (pointer: coarse) {
+  .guide-btn,
+  .hero-btn,
+  .section-link,
+  .community-link-pill,
+  .contact-link-card,
+  .organization-actions a {
+    min-height: 44px; /* Apple HIG minimum touch target */
+  }
+
+  .guide-btn {
+    padding: 12px 18px;
+  }
+
+  .contact-link-card {
+    padding: 14px 16px;
+  }
+
+  .community-link-pill {
+    padding: 12px 20px;
+  }
 }
 
 @media (max-width: 720px) {

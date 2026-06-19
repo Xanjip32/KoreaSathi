@@ -46,7 +46,7 @@
         <div class="guide-meta">${escapeHtml(String(pagesLabel))} • ${escapeHtml(g.readTime || '')}</div>
         <div class="guide-actions">
           <a href="${escapeHtml(viewUrl)}" class="guide-btn guide-btn-primary" target="_blank">Open</a>
-          <a href="${escapeHtml(downloadUrl)}" class="guide-btn guide-btn-secondary" download>Download</a>
+          <a href="${escapeHtml(downloadUrl)}" class="guide-btn guide-btn-secondary" onclick="event.preventDefault(); downloadGuide(this.href)">Download</a>
         </div>
       </article>
     `}).join('');

@@ -1,3 +1,25 @@
+/**
+ * Reliable PDF download - fetches as blob to force download in all browsers
+ */
+async function downloadGuide(url, filename) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch');
+    const blob = await response.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename || url.split('/').pop();
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl);
+  } catch (err) {
+    console.warn('Download fallback to direct open', err);
+    window.open(url, '_blank');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const footerTarget = document.querySelector('[data-footer]');
   const navbarTarget = document.querySelector('[data-navbar]');
