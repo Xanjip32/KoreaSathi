@@ -1,10 +1,6 @@
 (function(){
-  const searchEl = document.getElementById('videoSearch');
-  const sortEl = document.getElementById('videoSort');
-  const container = document.getElementById('videosContainer');
+  const container = document.getElementById('homeVideosContainer');
   if(!container) return;
-
-  let allVideos = [];
 
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]; }); }
 
@@ -24,20 +20,20 @@
     return match ? match[0] : null;
   }
 
-  function renderList(posts){
+  function renderVideos(posts){
     if(!posts.length){
-      container.innerHTML = '<p style="color:#888;text-align:center;grid-column:1/-1;">No videos found.</p>';
+      container.innerHTML = '<p style="color:#888;text-align:center;grid-column:1/-1;">No videos available yet.</p>';
       return;
     }
-    container.innerHTML = posts.map(function(post){
-      var title = wpDecodeHtml(post.title.rendered);
-      var rawHtml = post.content.rendered || '';
-      var date = formatDate(post.date);
+    container.innerHTML = posts.map(post => {
+      const title = wpDecodeHtml(post.title.rendered);
+      const rawHtml = post.content.rendered || '';
+      const date = formatDate(post.date);
 
-      var ytUrl = findYoutubeEmbed(rawHtml);
-      var tiktokHtml = findTiktokEmbed(rawHtml);
+      const ytUrl = findYoutubeEmbed(rawHtml);
+      const tiktokHtml = findTiktokEmbed(rawHtml);
 
-      var embedHtml = '';
+      let embedHtml = '';
       if(ytUrl){
         embedHtml = '<iframe data-src="' + escapeHtml(ytUrl) + '" title="' + escapeHtml(title) + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="embedded-video lazy-video"></iframe>';
       } else if(tiktokHtml){
@@ -68,32 +64,18 @@
     }
   }
 
-  function applyFilters(){
-    var q = (searchEl.value || '').trim().toLowerCase();
-    var sort = sortEl.value;
-    var filtered = allVideos.filter(function(v){
-      var title = wpDecodeHtml(v.title.rendered).toLowerCase();
-      return title.includes(q);
-    });
-    if(sort === 'latest') filtered.sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
-    renderList(filtered);
-  }
-
   container.innerHTML = '<p style="color:#888;text-align:center;grid-column:1/-1;">Loading videos...</p>';
 
-  wpFetchPosts({ per_page: 20, orderby: 'date', order: 'desc' })
-    .then(function(posts){
-      allVideos = posts.filter(function(p){
+  wpFetchPosts({ per_page: 10, orderby: 'date', order: 'desc' })
+    .then(posts => {
+      var videoPosts = posts.filter(function(p){
         var rawHtml = (p.content && p.content.rendered) || '';
         return findYoutubeEmbed(rawHtml) !== null || findTiktokEmbed(rawHtml) !== null;
       });
-      applyFilters();
+      renderVideos(videoPosts.slice(0, 3));
     })
     .catch(function(err){
-      console.error('Failed to load videos:', err);
+      console.warn('Failed to load videos from WordPress:', err);
       container.innerHTML = '<p style="color:#888;text-align:center;grid-column:1/-1;">Could not load videos.</p>';
     });
-
-  if(searchEl) searchEl.addEventListener('input', applyFilters);
-  if(sortEl) sortEl.addEventListener('change', applyFilters);
 })();

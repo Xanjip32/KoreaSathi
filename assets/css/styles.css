@@ -1544,3 +1544,9 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Lazy load video placeholder */
+.lazy-video {
+  background:#1a1f2e;
+  min-height:200px;
+}

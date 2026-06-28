@@ -7,7 +7,6 @@
   <meta name="description" content="Access comprehensive guides for international students in Korea. Learn about work permits, part-time jobs, immigration, and more.">
   
   <meta name="google-site-verification" content="c78jIv6lNaSBTWGNi7Tm9RnGETctn-DA2ijauWvT1gc" />
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://koreasathi.com/guides">
   <meta property="og:title" content="KoreaSathi Student Guides - Everything You Need to Know">
@@ -17,7 +16,6 @@
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="../assets/css/guides.css">
   <script src="../assets/js/main.js" defer></script>
-  <script src="../assets/js/guide-data.js" defer></script>
 </head>
 <body class="guides-page">
   <div data-navbar></div>
@@ -28,21 +26,13 @@
       <h1>Comprehensive Guides for Students in Korea</h1>
     </section>
 
-    <section class="popular-guides">
-      <h2>All Guides</h2>
-    </section>
-
     <section class="guides-controls">
       <div class="search-row">
-        <input id="guidesSearch" placeholder="Search guides by title or description" aria-label="Search guides">
-        <select id="guidesSort" aria-label="Sort guides">
-          <option value="latest">Latest</option>
-          <option value="popular">Popular</option>
-        </select>
+        <input id="guidesSearch" placeholder="Search guides by title..." aria-label="Search guides">
       </div>
-
-      <div id="guidesContainer" class="guides-grid" aria-live="polite"></div>
     </section>
+
+    <div id="guidesCategoriesContainer" class="guides-categories"></div>
   </main>
 
   <div data-footer></div>

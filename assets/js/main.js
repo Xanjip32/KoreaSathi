@@ -1,5 +1,133 @@
 /**
- * Reliable PDF download - fetches as blob to force download in all browsers
+ * WordPress REST API helpers with localStorage caching
+ */
+const WP_API_BASE = 'http://korea-sathiwp.local/wp-json/wp/v2';
+const CACHE_TTL = 5 * 60 * 1000;
+
+function wpCacheGet(key) {
+  try {
+    const raw = localStorage.getItem('wp_cache_' + key);
+    if (!raw) return null;
+    const item = JSON.parse(raw);
+    if (Date.now() - item.ts > CACHE_TTL) {
+      localStorage.removeItem('wp_cache_' + key);
+      return null;
+    }
+    return item.data;
+  } catch (e) { return null; }
+}
+
+function wpCacheSet(key, data) {
+  try {
+    localStorage.setItem('wp_cache_' + key, JSON.stringify({ ts: Date.now(), data }));
+  } catch (e) {}
+}
+
+async function wpFetchPosts(params = {}) {
+  const query = new URLSearchParams({
+    per_page: params.per_page || 10,
+    orderby: params.orderby || 'date',
+    order: params.order || 'desc',
+    _fields: 'id,title,date,link,content,excerpt,categories',
+    ...params
+  });
+  const cacheKey = 'posts_' + query.toString();
+  const cached = wpCacheGet(cacheKey);
+  if (cached) return cached;
+  const res = await fetch(`${WP_API_BASE}/posts?${query}`);
+  if (!res.ok) throw new Error(`WP API error: ${res.status}`);
+  const data = await res.json();
+  wpCacheSet(cacheKey, data);
+  return data;
+}
+
+async function wpFetchCategories() {
+  const cacheKey = 'categories';
+  const cached = wpCacheGet(cacheKey);
+  if (cached) return cached;
+  const res = await fetch(`${WP_API_BASE}/categories?per_page=100&_fields=id,name,slug,count`);
+  if (!res.ok) throw new Error(`WP API error: ${res.status}`);
+  const data = await res.json();
+  wpCacheSet(cacheKey, data);
+  return data;
+}
+
+async function wpFetchPost(id) {
+  const cacheKey = 'post_' + id;
+  const cached = wpCacheGet(cacheKey);
+  if (cached) return cached;
+  const res = await fetch(`${WP_API_BASE}/posts/${id}?_fields=id,title,date,link,content,excerpt,categories`);
+  if (!res.ok) throw new Error(`WP API error: ${res.status}`);
+  const data = await res.json();
+  wpCacheSet(cacheKey, data);
+  return data;
+}
+
+function wpDecodeHtml(html) {
+  const txt = document.createElement('textarea');
+  txt.innerHTML = html;
+  return txt.value;
+}
+
+function wpStripTags(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
+}
+
+function wpFindPdfUrl(html) {
+  const objMatch = html.match(/<object[^>]*data="([^"]*\.pdf[^"]*)"[^>]*>/i);
+  if (objMatch) return objMatch[1];
+  const linkMatch = html.match(/<a[^>]*href="([^"]*\.pdf[^"]*)"[^>]*download/i);
+  if (linkMatch) return linkMatch[1];
+  const anyMatch = html.match(/href="([^"]*\.pdf[^"]*)"/i);
+  if (anyMatch) return anyMatch[1];
+  return null;
+}
+
+function wpFindVideoEmbed(html) {
+  const ytMatch = html.match(/(?:youtube\.com\/(?:embed|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if (ytMatch) return { platform: 'youtube', embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}`, videoId: ytMatch[1] };
+  const ttBlockquote = html.match(/<blockquote[^>]*class="[^"]*tiktok-embed[^"]*"[^>]*>/i);
+  if (ttBlockquote) {
+    const urlMatch = html.match(/cite="([^"]*)"/i);
+    return { platform: 'tiktok', url: urlMatch ? urlMatch[1] : null, embedHtml: ttBlockquote[0] };
+  }
+  const ttLink = html.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/i);
+  if (ttLink) return { platform: 'tiktok', url: ttLink[0] };
+  return null;
+}
+
+function wpExtractText(html) {
+  return wpStripTags(html).trim().substring(0, 200);
+}
+
+/**
+ * Lazy load videos with Intersection Observer
+ */
+function wpLazyLoadVideos() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const src = el.dataset.src;
+        if (src) {
+          el.src = src;
+          el.removeAttribute('data-src');
+          el.classList.remove('lazy-video');
+        }
+        observer.unobserve(el);
+      }
+    });
+  }, { rootMargin: '200px' });
+
+  document.querySelectorAll('iframe[data-src]').forEach(iframe => {
+    observer.observe(iframe);
+  });
+}
+
+/**
+ * Reliable PDF download
  */
 async function downloadGuide(url, filename) {
   try {
@@ -20,6 +148,33 @@ async function downloadGuide(url, filename) {
   }
 }
 
+/**
+ * Back to top button
+ */
+function wpInitBackToTop() {
+  const btn = document.createElement('button');
+  btn.innerHTML = '&uarr;';
+  btn.className = 'back-to-top';
+  btn.setAttribute('aria-label', 'Back to top');
+  btn.style.cssText = 'display:none;position:fixed;bottom:30px;right:30px;z-index:999;width:48px;height:48px;border-radius:50%;border:none;background:#0b74de;color:#fff;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);transition:opacity 0.3s,transform 0.3s;';
+  document.body.appendChild(btn);
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+      btn.style.display = 'block';
+      setTimeout(() => { btn.style.opacity = '1'; btn.style.transform = 'translateY(0)'; }, 10);
+    } else {
+      btn.style.opacity = '0';
+      btn.style.transform = 'translateY(20px)';
+      setTimeout(() => { btn.style.display = 'none'; }, 300);
+    }
+  });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const footerTarget = document.querySelector('[data-footer]');
   const navbarTarget = document.querySelector('[data-navbar]');
@@ -29,18 +184,15 @@ document.addEventListener('DOMContentLoaded', () => {
   function processLinks(container) {
     if (!container) return;
 
-    // Handle root links (index.html)
     container.querySelectorAll('[data-root-link]').forEach((link) => {
       link.href = `${rootPrefix}index.html`;
     });
 
-    // Handle page links (about.html, etc.)
     container.querySelectorAll('[data-page-link]').forEach((link) => {
       const page = link.dataset.pageLink;
       link.href = isPagesPath ? page : `pages/${page}`;
     });
 
-    // Handle asset links (images, icons)
     container.querySelectorAll('[data-asset-link]').forEach((asset) => {
       const path = asset.dataset.assetLink;
       if (asset.tagName === 'IMG') {
@@ -51,19 +203,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Inject Navbar
   if (navbarTarget) {
     fetch(`${rootPrefix}partials/navbar.html`)
       .then((response) => response.text())
       .then((html) => {
         navbarTarget.innerHTML = html;
         processLinks(navbarTarget);
-        initHamburger(); // Re-initialize hamburger events after injection
+        initHamburger();
       })
       .catch((err) => console.error('Navbar injection failed:', err));
   }
 
-  // Inject Footer
   if (footerTarget) {
     fetch(`${rootPrefix}partials/footer.html`)
       .then((response) => response.text())
@@ -82,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!hamburger || !dropdownMenu) return;
 
-    // Remove existing listeners if any (to avoid duplicates)
     const newHamburger = hamburger.cloneNode(true);
     hamburger.parentNode.replaceChild(newHamburger, hamburger);
 
@@ -96,10 +245,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initial call for case where nav might be hardcoded or already present
   initHamburger();
+  wpInitBackToTop();
+  wpLazyLoadVideos();
 
-  // Load work permit PDF preview on homepage if wrapper exists
   const pdfWrapper = document.getElementById('workPermitPdf');
   if(pdfWrapper){
     const pdfPath = `${rootPrefix}assets/guides/work_permit/work_permit.pdf`;

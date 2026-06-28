@@ -50,6 +50,15 @@
   aspect-ratio: 16 / 9;
 }
 
+.tiktok-embed-wrapper {
+  width: 100%;
+  min-height: 500px;
+}
+.tiktok-embed-wrapper blockquote {
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
 @media (max-width:768px) {
   .videos-hero { min-height:350px; padding:60px 24px 40px; }
   .videos-hero h1 { font-size:2rem; }

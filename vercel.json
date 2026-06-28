@@ -5,7 +5,9 @@
     { "source": "/about", "destination": "/pages/about.html" },
     { "source": "/contact", "destination": "/pages/contact.html" },
     { "source": "/guides", "destination": "/pages/guides.html" },
+    { "source": "/guide", "destination": "/pages/guide.html" },
     { "source": "/videos", "destination": "/pages/videos.html" },
-    { "source": "/community", "destination": "/pages/community.html" }
+    { "source": "/community", "destination": "/pages/community.html" },
+    { "source": "/organization", "destination": "/pages/organization.html" }
   ]
 }

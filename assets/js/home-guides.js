@@ -1,56 +1,55 @@
 ﻿(function(){
   const container = document.getElementById('homeGuidesContainer');
-  const guides = Array.isArray(window.KOREASATHI_GUIDES) ? window.KOREASATHI_GUIDES.slice() : [];
+  if(!container) return;
 
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]; }); }
 
-  function normalizeUrl(url){
-    if(!url) return url;
-    if(/^https?:\/\//.test(url)) return url;
-    let normalized = url;
-    if(normalized.startsWith('/')) normalized = normalized.slice(1);
-    if(normalized.startsWith('guides/')) {
-      normalized = normalized.replace(/^guides\//, 'assets/guides/');
-    }
-    const currentPath = window.location.pathname.replace(/\\/g, '/');
-    const isInPages = currentPath.includes('/pages/');
-    if(isInPages && normalized.startsWith('pages/')){
-      return normalized.slice(6);
-    }
-    if(isInPages && (normalized.startsWith('guides/') || normalized.startsWith('assets/'))){
-      return `../${normalized}`;
-    }
-    return normalized;
+  function formatDate(d){
+    try { return new Date(d).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }); }
+    catch(e){ return d; }
   }
 
-  function renderHomeGuides(){
-    const sorted = guides.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-    const topFour = sorted.slice(0, 4);
-
-    container.innerHTML = topFour.map(g => {
-      const badge = g.badge ? `<span class="guide-badge">${escapeHtml(g.badge)}</span>` : '';
-      const viewUrl = normalizeUrl(g.viewUrl || g.pdfPath || '#');
-      const downloadUrl = normalizeUrl(g.downloadUrl || g.pdfPath || viewUrl);
-      const pagesLabel = g.pages || 'PDF';
+  function renderGuides(posts){
+    if(!posts.length){
+      container.innerHTML = '<p style="color:#888;text-align:center;grid-column:1/-1;">No guides available yet.</p>';
+      return;
+    }
+    container.innerHTML = posts.map(post => {
+      const title = wpDecodeHtml(post.title.rendered);
+      const rawHtml = post.content.rendered || '';
+      const pdfUrl = wpFindPdfUrl(rawHtml);
+      const desc = wpExtractText(rawHtml);
+      const date = formatDate(post.date);
 
       return `
       <article class="guide-card guide-card-featured">
-        ${badge}
+        <span class="guide-badge">PDF Guide</span>
         <div class="guide-card-header">
-          <div class="guide-pdf-icon">📄</div>
-          <span class="guide-category-tag">${escapeHtml((g.category || '').toUpperCase())}</span>
+          <div class="guide-pdf-icon">&#x1F4C4;</div>
         </div>
-        <h3>${escapeHtml(g.title || 'Untitled Guide')}</h3>
-        <p>${escapeHtml(g.desc || '')}</p>
-        <div class="guide-meta">${escapeHtml(String(pagesLabel))} • ${escapeHtml(g.readTime || '')}</div>
+        <h3>${escapeHtml(title)}</h3>
+        <p>${escapeHtml(desc)}</p>
+        <div class="guide-meta">${date}</div>
         <div class="guide-actions">
-          <a href="${escapeHtml(viewUrl)}" class="guide-btn guide-btn-primary" target="_blank">Open</a>
-          <a href="${escapeHtml(downloadUrl)}" class="guide-btn guide-btn-secondary" onclick="event.preventDefault(); downloadGuide(this.href)">Download</a>
+          ${pdfUrl ? `<a href="${escapeHtml(pdfUrl)}" class="guide-btn guide-btn-primary" target="_blank">Open</a>` : ''}
+          ${pdfUrl ? `<a href="${escapeHtml(pdfUrl)}" class="guide-btn guide-btn-secondary" onclick="event.preventDefault(); downloadGuide(this.href)">Download</a>` : ''}
         </div>
-      </article>
-      `;
+      </article>`;
     }).join('');
   }
 
-  renderHomeGuides();
+  container.innerHTML = '<p style="color:#888;text-align:center;grid-column:1/-1;">Loading guides...</p>';
+
+  wpFetchPosts({ per_page: 10, orderby: 'date', order: 'desc' })
+    .then(posts => {
+      const pdfPosts = posts.filter(p => {
+        const rawHtml = (p.content && p.content.rendered) || '';
+        return wpFindPdfUrl(rawHtml) !== null;
+      });
+      renderGuides(pdfPosts.slice(0, 3));
+    })
+    .catch(err => {
+      console.warn('Failed to load guides from WordPress:', err);
+      container.innerHTML = '<p style="color:#888;text-align:center;grid-column:1/-1;">Could not load guides.</p>';
+    });
 })();
