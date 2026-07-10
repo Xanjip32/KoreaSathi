@@ -13,6 +13,9 @@
 // data-sponsor-slot. Each gets a clear "Sponsored"/"Partner" badge.
 // ============================================================
 
+import DOMPurify from 'dompurify';
+import { escapeHtml } from './api.js';
+
 export const AD_SLOTS = {
   top:       { enabled: false, html: '', src: '' },   // below navbar
   sidebar:   { enabled: false, html: '', src: '' },   // desktop only
@@ -55,7 +58,7 @@ function renderAdSlot(key, slot) {
     el.innerHTML = '<div class="ad-slot__inner"></div>';
     el.querySelector('.ad-slot__inner').appendChild(s);
   } else {
-    el.innerHTML = `<div class="ad-slot__inner">${slot.html}</div>`;
+    el.innerHTML = `<div class="ad-slot__inner">${DOMPurify.sanitize(slot.html)}</div>`;
   }
 }
 
@@ -66,17 +69,17 @@ function renderSponsor(sponsor) {
   if (!el) return;
   el.classList.add('is-active');
   const badge = sponsor.badge ? `<span class="sponsor-badge">${sponsor.badge}</span>` : '';
-  const logo = sponsor.logo ? `<img class="sponsor-card__logo" src="${sponsor.logo}" alt="${sponsor.name} logo" loading="lazy">` : '';
+  const logo = sponsor.logo ? `<img class="sponsor-card__logo" src="${escapeHtml(sponsor.logo)}" alt="${escapeHtml(sponsor.name)} logo" loading="lazy">` : '';
   const cta = sponsor.cta
-    ? `<a class="sponsor-card__cta" href="${sponsor.cta.url}" target="_blank" rel="noopener sponsored">${sponsor.cta.label}</a>`
+    ? `<a class="sponsor-card__cta" href="${escapeHtml(sponsor.cta.url)}" target="_blank" rel="noopener sponsored">${escapeHtml(sponsor.cta.label)}</a>`
     : '';
   const card = document.createElement('div');
   card.className = 'sponsor-card';
   card.innerHTML = `
     ${logo}
     <div>
-      <div class="sponsor-card__name">${sponsor.name}${badge}</div>
-      <div class="sponsor-card__desc">${sponsor.description || ''}</div>
+      <div class="sponsor-card__name">${escapeHtml(sponsor.name)}${badge}</div>
+      <div class="sponsor-card__desc">${escapeHtml(sponsor.description || '')}</div>
     </div>
     ${cta}`;
   el.appendChild(card);

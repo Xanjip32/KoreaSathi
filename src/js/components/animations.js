@@ -8,6 +8,10 @@ export function initAnimations() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return;
 
+  // Only hide animated elements once JS is confirmed running, so content is
+  // visible (FCP) and no CLS occurs if JS is slow/blocked.
+  document.documentElement.classList.add('js-anim');
+
   const animatedElements = document.querySelectorAll('[data-aos]');
 
   const observer = new IntersectionObserver((entries) => {
@@ -33,10 +37,9 @@ export function initAnimations() {
     threshold: 0.1
   });
 
-  // Set initial state
+  // Set initial transform state (opacity handled by .js-anim CSS)
   animatedElements.forEach(el => {
     const animation = el.dataset.aos;
-    el.style.opacity = '0';
     el.style.transition = 'none';
 
     switch (animation) {

@@ -210,6 +210,12 @@
   a { @apply transition-colors duration-150; }
   h1, h2, h3, h4, h5, h6 { @apply font-bold tracking-tight text-[#0F172A]; line-height: 1.1; }
   p { @apply text-[var(--fg-2)]; }
+
+  /* AOS-style scroll animations: only hide when JS is active, so content
+     is visible (and FCP happens) even if JS fails or is slow. Prevents CLS
+     and invisible-content flashes. */
+  .js-anim [data-aos] { opacity: 0; }
+  .js-anim [data-aos].aos-animate { opacity: 1; }
 }
 
 @layer components {

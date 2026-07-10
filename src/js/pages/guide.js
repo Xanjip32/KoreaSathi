@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import { fetchPost, getTitle, getContent, getExcerpt, findPdfUrl, findVideoEmbed, formatDate, escapeHtml, downloadFile } from '../api.js';
 
 // Remove the raw WordPress media blocks (PDF file block + TikTok embed figure)
@@ -139,7 +140,12 @@ export function initGuide() {
           </div>`;
       }
 
-      guideBody.innerHTML = mediaHtml + (content || '<p class="text-white/30">No content available.</p>');
+      const sanitizedContent = content ? DOMPurify.sanitize(content, {
+        ALLOWED_TAGS: ['p','br','strong','em','a','ul','ol','li','h1','h2','h3','h4','h5','h6','img','table','thead','tbody','tr','th','td','blockquote','pre','code','figure','figcaption','div','span','iframe','object','embed','hr','dl','dt','dd','details','summary','section','article'],
+        ALLOWED_ATTR: ['href','src','alt','title','class','style','width','height','frameborder','allow','allowfullscreen','loading','referrerpolicy','scrolling','data-src','id','target','rel','colspan','rowspan','scope','align','valign'],
+        ALLOW_DATA_ATTR: false,
+      }) : '';
+      guideBody.innerHTML = mediaHtml + (sanitizedContent || '<p class="text-white/30">No content available.</p>');
       const sourceLink = document.getElementById('guideSourceLink');
       const sourceUrl = post.URL || '';
       if (sourceLink && sourceUrl) {

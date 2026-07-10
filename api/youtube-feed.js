@@ -1,5 +1,9 @@
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const ALLOWED_ORIGINS = ['https://koreasathi.com', 'http://localhost:3000'];
+  const origin = req.headers.origin;
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Cache-Control', 's-maxage=1800, stale-while-revalidate');
@@ -8,7 +12,12 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   const channelId = req.query.channel_id || 'UCxHGYNiWoE-5zD4eN_-uQ8g';
-  const limit = parseInt(req.query.limit || '12', 10);
+
+  if (!/^UC[a-zA-Z0-9_-]{22}$/.test(channelId)) {
+    return res.status(400).json({ error: 'Invalid channel_id format' });
+  }
+
+  const limit = Math.min(Math.max(parseInt(req.query.limit || '12', 10) || 12, 1), 50);
 
   try {
     const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(channelId)}`;

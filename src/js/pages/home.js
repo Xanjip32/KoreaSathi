@@ -51,7 +51,7 @@ export function initHomeGuides() {
           <p class="text-white/50 text-xs leading-relaxed mb-5 line-clamp-2 flex-1">${escapeHtml(desc)}</p>
           <div class="flex gap-2 mt-auto">
             <a href="${escapeHtml(pdfUrl)}" class="flex-1 text-center btn-primary btn-sm" target="_blank" rel="noopener">Open</a>
-            <button class="flex-1 text-center btn-outline btn-sm" onclick="window.downloadPdf('${escapeHtml(pdfUrl)}', '${escapeHtml(title)}')">Download</button>
+            <button class="flex-1 text-center btn-outline btn-sm" data-pdf-url="${escapeHtml(pdfUrl)}" data-pdf-title="${escapeHtml(title)}" data-action="download-pdf">Download</button>
           </div>
         </article>
       `;
@@ -62,6 +62,12 @@ export function initHomeGuides() {
     const name = (title || 'guide').replace(/[^a-zA-Z0-9]/g, '_') + '.pdf';
     downloadFile(url, name);
   };
+
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-action="download-pdf"]');
+    if (!btn) return;
+    window.downloadPdf(btn.dataset.pdfUrl, btn.dataset.pdfTitle);
+  });
 
   fetchPosts({ number: 30, order_by: 'date', order: 'DESC' })
     .then(posts => {

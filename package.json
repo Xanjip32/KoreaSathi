@@ -10,7 +10,7 @@
     "build:sitemap": "node scripts/build-sitemap.js",
     "build:css": "tailwindcss -i ./src/css/input.css -o ./dist/css/styles.css --minify",
     "build:js": "esbuild src/js/main.js --bundle --outfile=dist/js/main.js --minify --format=esm --target=es2020",
-    "copy:assets": "node -e \"require('fs').cpSync('src/assets','dist/assets',{recursive:true}); require('fs').cpSync('src/partials','dist/partials',{recursive:true}); require('fs').cpSync('src/pages','dist/pages',{recursive:true}); require('fs').cpSync('src/index.html','dist/index.html');\"",
+    "copy:assets": "node -e \"const fs=require('fs');for(const d of ['assets','partials','pages']){fs.rmSync('dist/'+d,{recursive:true,force:true});fs.cpSync('src/'+d,'dist/'+d,{recursive:true});}fs.rmSync('dist/index.html',{force:true});fs.cpSync('src/index.html','dist/index.html');\"",
     "serve": "npx serve dist -p 3000 -l 3000"
   },
   "devDependencies": {
@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
+    "dompurify": "^3.4.11",
     "owl.carousel": "^2.3.4"
   }
 }

@@ -39,7 +39,7 @@ export default {
         subtle: '#64748B',
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Pretendard', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'ui-monospace', 'monospace'],
       },
       fontSize: {

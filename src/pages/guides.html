@@ -17,8 +17,10 @@
   <meta property="twitter:image" content="https://koreasathi.com/assets/images/guides_bg.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
   <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body class="antialiased">
@@ -150,13 +152,21 @@
             <p class="text-white/50 text-xs leading-relaxed mb-5 line-clamp-3 flex-1">${desc}</p>
             <div class="flex gap-2 mt-auto">
               <a href="${guideLink}" class="flex-1 text-center btn-primary btn-sm">Read Guide</a>
-              ${pdfUrl ? `<button class="flex-1 text-center btn-outline btn-sm" onclick="window.downloadPdf('${pdfUrl}', '${title.replace(/'/g, "\\'")}')">Download</button>` : ''}
+              ${pdfUrl ? `<button class="flex-1 text-center btn-outline btn-sm" data-pdf-url="${pdfUrl}" data-pdf-title="${title}" data-action="download-pdf">Download</button>` : ''}
               ${url ? `<a href="${url}" target="_blank" rel="noopener" class="flex-1 text-center btn-ghost btn-sm" title="View on WordPress" aria-label="View on WordPress"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>` : ''}
             </div>
           </article>
         `;
       }).join('');
     }
+
+    document.getElementById('guidesContainer').addEventListener('click', function(e) {
+      var btn = e.target.closest('[data-action="download-pdf"]');
+      if (!btn) return;
+      var url = btn.getAttribute('data-pdf-url');
+      var title = btn.getAttribute('data-pdf-title');
+      window.downloadPdf(url, title);
+    });
   </script>
   <script src="../js/main.js" type="module"></script>
 </body>

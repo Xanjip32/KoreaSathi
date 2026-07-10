@@ -1,5 +1,9 @@
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const ALLOWED_ORIGINS = ['https://koreasathi.com', 'http://localhost:3000'];
+  const origin = req.headers.origin;
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate');
@@ -12,7 +16,11 @@ export default async function handler(req, res) {
 
   try {
     const parsed = new URL(url);
-    if (!parsed.hostname.includes('tiktok.com')) {
+    if (parsed.protocol !== 'https:') {
+      return res.status(400).json({ error: 'Only HTTPS URLs allowed' });
+    }
+    const allowedHosts = ['www.tiktok.com', 'tiktok.com'];
+    if (!allowedHosts.includes(parsed.hostname)) {
       return res.status(400).json({ error: 'Invalid TikTok URL' });
     }
 
