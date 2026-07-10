@@ -3,25 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact - KoreaSathi</title>
-  <meta name="description" content="Get in touch with KoreaSathi. Send us a message, report an issue, or suggest a new feature.">
+  <title>Contact KoreaSathi - Get Support, Report Issues, Suggest Features</title>
+  <meta name="description" content="Get in touch with KoreaSathi. Send us a message, report an issue, suggest a new guide, or collaborate with us.">
   <link rel="canonical" href="https://koreasathi.com/contact">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://koreasathi.com/contact">
-  <meta property="og:title" content="Contact - KoreaSathi">
+  <meta property="og:title" content="Contact KoreaSathi - Get Support, Report Issues, Suggest Features">
   <meta property="og:description" content="Get in touch with KoreaSathi — send a message, report an issue, or suggest a new guide or feature.">
   <meta property="og:image" content="https://koreasathi.com/assets/images/hero_background.webp">
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:title" content="Contact - KoreaSathi">
-  <meta property="twitter:description" content="Get in touch with KoreaSathi — send a message, report an issue, or suggest a feature.">
-  <meta property="twitter:image" content="https://koreasathi.com/assets/images/hero_background.webp">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="KoreaSathi">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Contact KoreaSathi - Get Support, Report Issues, Suggest Features">
+  <meta name="twitter:description" content="Get in touch with KoreaSathi — send a message, report an issue, or suggest a feature.">
+  <meta name="twitter:image" content="https://koreasathi.com/assets/images/hero_background.webp">
+  <meta name="twitter:site" content="@csjibu">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'" crossorigin="anonymous" referrerpolicy="no-referrer">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
   <link rel="stylesheet" href="../css/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://koreasathi.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Contact", "item": "https://koreasathi.com/contact" }
+    ]
+  }
+  </script>
+  <noscript><style>.skeleton{display:none!important}</style></noscript>
 </head>
 <body class="antialiased">
   <a href="#main-content" class="skip-link">Skip to content</a>
@@ -68,15 +83,16 @@
                 </div>
                 <div class="form-group">
                   <label for="subject" class="form-label">Subject</label>
-                  <input type="text" id="subject" name="subject" autocomplete="subject" class="form-input" placeholder="How can we help?">
+                  <input type="text" id="subject" name="subject" autocomplete="off" class="form-input" placeholder="How can we help?">
                 </div>
                 <div class="form-group">
                   <label for="message" class="form-label">Message *</label>
-                  <textarea id="message" name="message" autocomplete="email" required rows="5" class="form-input resize-none" placeholder="Tell us what's on your mind..."></textarea>
+                  <textarea id="message" name="message" autocomplete="off" required rows="5" class="form-input resize-none" placeholder="Tell us what's on your mind..."></textarea>
                 </div>
                 <button type="submit" class="btn-primary w-full sm:w-auto">
                   <i class="fas fa-paper-plane text-xs" aria-hidden="true"></i> Send Message
                 </button>
+                <div id="contactStatus" class="form-message" role="status" aria-live="polite"></div>
               </form>
             </div>
           </div>
@@ -95,7 +111,7 @@
             <div class="glass-card p-6">
               <div class="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary text-sm mb-4"><i class="fab fa-discord" aria-hidden="true"></i></div>
               <h3 class="text-sm font-bold text-white mb-1">Discord</h3>
-              <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" class="text-white/60 text-xs hover:text-primary transition-colors">Join our community server</a>
+              <a href="https://discord.gg/koreasathi" target="_blank" rel="noopener noreferrer" class="text-white/60 text-xs hover:text-primary transition-colors">Join our community server</a>
             </div>
             <div class="glass-card p-6">
               <div class="flex items-center gap-3">

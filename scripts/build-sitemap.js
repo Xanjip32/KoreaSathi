@@ -8,12 +8,12 @@ const SITE_URL = 'https://koreasathi.com';
 const WP_API = 'https://public-api.wordpress.com/rest/v1.1/sites/koreasathi.wordpress.com';
 
 const STATIC_PAGES = [
-  { url: '/', changefreq: 'weekly', priority: '1.0' },
-  { url: '/about', changefreq: 'monthly', priority: '0.8' },
-  { url: '/guides', changefreq: 'weekly', priority: '0.9' },
-  { url: '/videos', changefreq: 'weekly', priority: '0.8' },
-  { url: '/organization', changefreq: 'monthly', priority: '0.8' },
-  { url: '/contact', changefreq: 'monthly', priority: '0.7' },
+  { url: '/', changefreq: 'weekly', priority: '1.0', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/about', changefreq: 'monthly', priority: '0.8', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/guides', changefreq: 'weekly', priority: '0.9', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/videos', changefreq: 'weekly', priority: '0.8', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/organization', changefreq: 'monthly', priority: '0.8', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/contact', changefreq: 'monthly', priority: '0.7', lastmod: new Date().toISOString().split('T')[0] },
 ];
 
 function escapeXml(s) {

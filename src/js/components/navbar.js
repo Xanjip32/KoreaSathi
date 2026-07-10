@@ -104,6 +104,16 @@ function handleNavLinks() {
     link.href = isPagesPath ? page : 'pages/' + page;
   });
 
+  // Set aria-current=page on active nav link
+  const currentPath = window.location.pathname.replace(/\/+$/, '').replace(/\.html$/, '');
+  document.querySelectorAll('[data-page-link]').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    const linkPath = href.replace(/\.html$/, '').replace(/\/+$/, '');
+    if (currentPath.endsWith(linkPath) && linkPath !== '') {
+      link.setAttribute('aria-current', 'page');
+    }
+  });
+
   document.querySelectorAll('[data-asset-link]').forEach(asset => {
     const path = asset.dataset.assetLink;
     if (asset.tagName === 'IMG') {

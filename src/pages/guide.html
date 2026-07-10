@@ -3,25 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guide - KoreaSathi</title>
-  <meta name="description" content="Read this student guide on KoreaSathi for detailed information about life in South Korea.">
+  <title>Student Guide: Life, Work & Study in South Korea - KoreaSathi</title>
+  <meta name="description" content="Comprehensive student guide for international students in South Korea — covering work permits, visa, immigration, jobs, housing, banking, and daily life.">
   <link rel="canonical" href="https://koreasathi.com/guide">
+  <script>
+    // Fix canonical for crawlers: update ?id= URLs immediately
+    (function(){
+      var p = new URLSearchParams(window.location.search);
+      var id = p.get('id');
+      if (id) {
+        var url = 'https://koreasathi.com/guide?id=' + encodeURIComponent(id);
+        var c = document.querySelector('link[rel="canonical"]');
+        if (c) c.setAttribute('href', url);
+        var ou = document.querySelector('meta[property="og:url"]');
+        if (ou) ou.setAttribute('content', url);
+      }
+    })();
+  </script>
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://koreasathi.com/guide">
   <meta property="og:title" content="Guide - KoreaSathi">
   <meta property="og:description" content="Detailed student guides on KoreaSathi covering life, work, and study in South Korea.">
   <meta property="og:image" content="https://koreasathi.com/assets/images/guides_bg.webp">
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:title" content="Guide - KoreaSathi">
-  <meta property="twitter:description" content="Detailed student guides on KoreaSathi covering life, work, and study in South Korea.">
-  <meta property="twitter:image" content="https://koreasathi.com/assets/images/guides_bg.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Student Guide: Life, Work & Study in South Korea - KoreaSathi">
+  <meta name="twitter:description" content="Comprehensive student guide for international students in South Korea — work permits, visa, immigration, jobs, housing.">
+  <meta name="twitter:image" content="https://koreasathi.com/assets/images/guides_bg.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'" crossorigin="anonymous" referrerpolicy="no-referrer">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+  <meta property="og:locale" content="en_US">
   <link rel="stylesheet" href="../css/styles.css">
+  <noscript><style>.skeleton{display:none!important}</style></noscript>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://koreasathi.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://koreasathi.com/guides" },
+      { "@type": "ListItem", "position": 3, "name": "Guide" }
+    ]
+  }
+  </script>
    <style>
     body { background: #151A28; color: #F1F5F9; font-family: 'Inter', system-ui, sans-serif; margin: 0; overflow-x: hidden; }
     .hero-gradient { background: linear-gradient(180deg, #071A35 0%, #102E5A 50%, #173D6B 100%); }
@@ -63,7 +91,7 @@
           <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Guide</span>
           <span class="text-white/70 text-xs font-semibold tracking-wide">Free Resource</span>
         </div>
-        <h1 id="guideTitle" class="hero-title mb-4">Loading...</h1>
+        <h1 id="guideTitle" class="hero-title mb-4">Student Guide</h1>
         <p id="guideDate" class="text-white/60 text-base sm:text-lg max-w-lg mx-auto"></p>
       </div>
     </div>
@@ -80,7 +108,7 @@
         <div class="ad-slot ad-slot--inarticle my-8" data-ad-slot="inarticle" aria-hidden="true"></div>
         <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3" data-aos="fade-up" data-aos-delay="100">
           <a href="guides.html" class="btn-outline"><i class="fas fa-arrow-left text-xs" aria-hidden="true"></i> Back to Guides</a>
-          <a id="guideSourceLink" href="#" target="_blank" rel="noopener" class="btn-ghost hidden"><i class="fas fa-external-link-alt text-xs" aria-hidden="true"></i> View on WordPress</a>
+          <a id="guideSourceLink" href="guides.html" target="_blank" rel="noopener" class="btn-ghost hidden"><i class="fas fa-external-link-alt text-xs" aria-hidden="true"></i> View on WordPress</a>
         </div>
       </div>
     </section>

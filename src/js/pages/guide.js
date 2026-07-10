@@ -32,7 +32,9 @@ function injectArticleJsonLd(post) {
         'logo': { '@type': 'ImageObject', 'url': 'https://koreasathi.com/assets/images/hero_background.webp' }
       },
       'description': getExcerpt(post) || 'Student guide on KoreaSathi.',
-      'mainEntityOfPage': 'https://koreasathi.com/guide?id=' + post.ID
+      'mainEntityOfPage': 'https://koreasathi.com/guide?id=' + post.ID,
+      'image': 'https://koreasathi.com/assets/images/guides_bg.webp',
+      'wordCount': ((getContent(post) || '').replace(/<[^>]+>/g, '').split(/\s+/).length)
     };
     if (post.URL) data['sameAs'] = post.URL;
     const script = document.createElement('script');
@@ -63,6 +65,9 @@ function updateDocumentMeta(post) {
     setMeta('meta[name="twitter:title"]', 'content', title);
     setMeta('meta[name="twitter:description"]', 'content', excerpt);
     setMeta('meta[name="twitter:image"]', 'content', img);
+    setMeta('meta[property="twitter:title"]', 'content', title);
+    setMeta('meta[property="twitter:description"]', 'content', excerpt);
+    setMeta('meta[property="twitter:image"]', 'content', img);
     setMeta('meta[name="description"]', 'content', excerpt);
     const canonical = document.head.querySelector('link[rel="canonical"]');
     if (canonical) canonical.setAttribute('href', url);
@@ -75,6 +80,8 @@ function updateDocumentMeta(post) {
     if (post.modified || post.date) setArticle('article:modified_time', post.modified || post.date);
     setArticle('article:author', 'KoreaSathi');
     setArticle('article:section', 'Student Guides');
+    const siteName = document.head.querySelector('meta[property="og:site_name"]');
+    if (!siteName) { const sn = document.createElement('meta'); sn.setAttribute('property', 'og:site_name'); sn.setAttribute('content', 'KoreaSathi'); document.head.appendChild(sn); }
   } catch (e) { /* non-fatal */ }
 }
 
@@ -115,7 +122,7 @@ export function initGuide() {
           <div class="mb-8 rounded-2xl overflow-hidden border border-white/10 bg-white/5">
             <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
               <span class="inline-flex items-center gap-2 text-sm font-semibold text-white"><i class="fas fa-file-pdf text-red-400"></i> PDF Guide</span>
-              <a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener" download class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"><i class="fas fa-download"></i> Download</a>
+              <a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener" download class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-300 hover:text-blue-200 transition-colors"><i class="fas fa-download"></i> Download</a>
             </div>
             <iframe src="${escapeHtml(pdfUrl)}#view=FitH" class="w-full" style="height:600px;border:0;" title="PDF Guide"></iframe>
           </div>`;

@@ -259,6 +259,19 @@
   .quick-card { @apply relative p-5 sm:p-6 rounded-2xl bg-[#1C2436] border border-[#2A3447] transition-all duration-300 ease-out cursor-pointer hover:border-blue-500/40 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(0,0,0,0.35)]; }
   .quick-card-icon { @apply w-11 h-11 rounded-xl flex items-center justify-center text-lg mb-4 transition-transform duration-300; }
   .quick-card:hover .quick-card-icon { @apply scale-110; }
+  /* Tappability affordance: arrow slides in on hover/focus */
+  .quick-card-arrow { @apply absolute top-4 right-4 text-[#94A3B8] opacity-0 -translate-x-1 transition-all duration-200 text-sm; }
+  .quick-card:hover .quick-card-arrow, .quick-card:focus-visible .quick-card-arrow { @apply opacity-100 translate-x-0 text-blue-400; }
+
+  /* Stat band: clear elevated surface so numbers read as a unit */
+  .stat-band { @apply rounded-2xl bg-[#1C2436] border border-[#2A3447] px-6 py-5 shadow-[0_6px_18px_rgba(0,0,0,0.25)]; }
+  .stat-value { @apply text-white font-bold text-xl tracking-tight; }
+  .stat-label { @apply text-[#94A3B8] text-[11px] uppercase tracking-[0.12em] font-semibold mt-0.5; }
+
+  /* Trust strip: reassurance signals under the hero */
+  .trust-strip { @apply flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[#94A3B8] text-xs font-medium; }
+  .trust-strip li { @apply inline-flex items-center gap-1.5; }
+  .trust-strip .trust-dot { @apply w-1.5 h-1.5 rounded-full bg-[#22C55E]; }
   .quick-access-panel { @apply rounded-3xl p-8 bg-[#071A35] border border-white/10 shadow-2xl; }
   .quick-access-panel .panel-header { @apply flex items-center justify-between gap-3 mb-3; }
   .quick-access-panel .panel-title { @apply font-bold text-white text-base; }
@@ -286,6 +299,11 @@
   .form-textarea { @apply form-input resize-y min-h-[120px]; }
   .form-error { @apply text-sm text-[#EF4444]; }
   .form-hint { @apply text-sm text-[#94A3B8]; }
+  /* Inline form status (success/error) announced via aria-live */
+  .form-message { @apply hidden mt-4 px-4 py-3 rounded-xl text-sm font-medium; }
+  .form-message.show { @apply block; }
+  .form-message--success { @apply bg-green-500/15 text-green-300 border border-green-500/30; }
+  .form-message--error { @apply bg-red-500/15 text-red-300 border border-red-500/30; }
 
   .nav-link { @apply px-2.5 py-1.5 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/5 transition-all duration-200; }
   .nav-link-active { @apply nav-link text-white bg-white/10; }

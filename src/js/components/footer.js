@@ -52,26 +52,24 @@ export function initFooter() {
             <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Guides</h3>
             <nav aria-label="Footer guides">
               <ul class="space-y-3">
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Work Permit Guide</a></li>
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Visa & Immigration</a></li>
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Part-time Jobs</a></li>
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Housing & Settlement</a></li>
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Banking & Finance</a></li>
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Emergency Resources</a></li>
+                <li><a href="${rootPrefix}pages/guides.html" class="text-white/60 hover:text-white transition-colors text-sm">Work Permit Guide</a></li>
+                <li><a href="${rootPrefix}pages/guides.html" class="text-white/60 hover:text-white transition-colors text-sm">Visa & Immigration</a></li>
+                <li><a href="${rootPrefix}pages/guides.html" class="text-white/60 hover:text-white transition-colors text-sm">Part-time Jobs</a></li>
+                <li><a href="${rootPrefix}pages/guides.html" class="text-white/60 hover:text-white transition-colors text-sm">Housing & Settlement</a></li>
+                <li><a href="${rootPrefix}pages/guides.html" class="text-white/60 hover:text-white transition-colors text-sm">Banking & Finance</a></li>
+                <li><a href="${rootPrefix}pages/guides.html" class="text-white/60 hover:text-white transition-colors text-sm">Emergency Resources</a></li>
               </ul>
             </nav>
           </div>
 
           <div>
-            <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Resources</h3>
-            <nav aria-label="Footer resources">
+            <h3 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Connect</h3>
+            <nav aria-label="Footer social">
               <ul class="space-y-3">
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Korean Language</a></li>
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Cultural Tips</a></li>
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Legal Rights</a></li>
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Healthcare</a></li>
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Transportation</a></li>
-                <li><a href="#" class="text-white/60 hover:text-white transition-colors text-sm">Scholarships</a></li>
+                <li><a href="https://www.youtube.com/@csjibu" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white transition-colors text-sm">YouTube</a></li>
+                <li><a href="https://www.tiktok.com/@csjibu" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white transition-colors text-sm">TikTok</a></li>
+                <li><a href="https://github.com/Xanjip32/KoreaSathi" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white transition-colors text-sm">GitHub</a></li>
+                <li><a href="https://discord.gg/koreasathi" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white transition-colors text-sm">Discord</a></li>
               </ul>
             </nav>
           </div>
@@ -84,8 +82,7 @@ export function initFooter() {
               &copy; ${new Date().getFullYear()} KoreaSathi. Free & Open Source. Built by students, for students.
             </p>
             <div class="flex items-center gap-6 text-sm">
-              <a href="#" class="text-white/50 hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" class="text-white/50 hover:text-white transition-colors">Terms of Service</a>
+              <a href="pages/privacy.html" class="text-white/50 hover:text-white transition-colors">Privacy Policy</a>
               <a href="https://github.com/Xanjip32/KoreaSathi" target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white transition-colors">View Source</a>
             </div>
           </div>

@@ -3,25 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guides - KoreaSathi</title>
-  <meta name="description" content="Comprehensive student guides for international students in South Korea — work permits, immigration, jobs, housing, and more.">
+  <title>Student Guides & Resources for South Korea - KoreaSathi</title>
+  <meta name="description" content="Comprehensive student guides for international students in South Korea — work permits, immigration, jobs, housing, banking, and emergency resources. Download free PDFs.">
   <link rel="canonical" href="https://koreasathi.com/guides">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://koreasathi.com/guides">
-  <meta property="og:title" content="Guides - KoreaSathi">
+  <meta property="og:title" content="Student Guides & Resources for South Korea - KoreaSathi">
   <meta property="og:description" content="Step-by-step guides for international students in South Korea: work permits, immigration, part-time jobs, housing, and more.">
   <meta property="og:image" content="https://koreasathi.com/assets/images/guides_bg.webp">
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:title" content="Guides - KoreaSathi">
-  <meta property="twitter:description" content="Step-by-step guides for international students in South Korea: work permits, immigration, jobs, and more.">
-  <meta property="twitter:image" content="https://koreasathi.com/assets/images/guides_bg.webp">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="KoreaSathi">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Student Guides & Resources for South Korea - KoreaSathi">
+  <meta name="twitter:description" content="Step-by-step guides for international students in South Korea: work permits, immigration, jobs, and more.">
+  <meta name="twitter:image" content="https://koreasathi.com/assets/images/guides_bg.webp">
+  <meta name="twitter:site" content="@csjibu">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'" crossorigin="anonymous" referrerpolicy="no-referrer">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
   <link rel="stylesheet" href="../css/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://koreasathi.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://koreasathi.com/guides" }
+    ]
+  }
+  </script>
+  <noscript><style>.skeleton{display:none!important}</style></noscript>
 </head>
 <body class="antialiased">
   <a href="#main-content" class="skip-link">Skip to content</a>
@@ -60,18 +75,18 @@
       <div class="grid-pattern"></div>
       <div class="container-custom relative z-10">
         <div class="text-center mb-10" data-aos="fade-up">
-          <p class="text-blue-400 text-xs font-bold uppercase tracking-[0.15em] mb-2">All Guides</p>
+          <p class="text-blue-300 text-xs font-bold uppercase tracking-[0.15em] mb-2">All Guides</p>
           <h2 class="section-title">Browse our library</h2>
           <p class="section-subtitle mt-3 mx-auto">Download PDF guides covering every aspect of student life in Korea.</p>
         </div>
         <div class="filter-pills mb-10" id="categoryFilters" role="group" aria-label="Filter guides by category" data-aos="fade-up" data-aos-delay="50">
-          <button class="filter-pill active" data-category="all" onclick="filterByCategory('all', this)">All</button>
-          <button class="filter-pill" data-category="work" onclick="filterByCategory('work', this)">Work Permit</button>
-          <button class="filter-pill" data-category="visa" onclick="filterByCategory('visa', this)">Visa &amp; Immigration</button>
-          <button class="filter-pill" data-category="job" onclick="filterByCategory('job', this)">Part-time Jobs</button>
-          <button class="filter-pill" data-category="housing" onclick="filterByCategory('housing', this)">Housing</button>
-          <button class="filter-pill" data-category="banking" onclick="filterByCategory('banking', this)">Banking</button>
-          <button class="filter-pill" data-category="emergency" onclick="filterByCategory('emergency', this)">Emergency</button>
+          <button class="filter-pill active" data-category="all" aria-pressed="true" onclick="filterByCategory('all', this)">All</button>
+          <button class="filter-pill" data-category="work" aria-pressed="false" onclick="filterByCategory('work', this)">Work Permit</button>
+          <button class="filter-pill" data-category="visa" aria-pressed="false" onclick="filterByCategory('visa', this)">Visa &amp; Immigration</button>
+          <button class="filter-pill" data-category="job" aria-pressed="false" onclick="filterByCategory('job', this)">Part-time Jobs</button>
+          <button class="filter-pill" data-category="housing" aria-pressed="false" onclick="filterByCategory('housing', this)">Housing</button>
+          <button class="filter-pill" data-category="banking" aria-pressed="false" onclick="filterByCategory('banking', this)">Banking</button>
+          <button class="filter-pill" data-category="emergency" aria-pressed="false" onclick="filterByCategory('emergency', this)">Emergency</button>
         </div>
         <div id="guidesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" data-aos="fade-up" data-aos-delay="100" aria-live="polite"></div>
         <aside class="ad-slot ad-slot--sidebar mt-10" data-ad-slot="sidebar" aria-hidden="true"></aside>
@@ -93,8 +108,12 @@
 
     function filterByCategory(cat, btn) {
       currentCategory = cat;
-      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.filter-pill').forEach(p => {
+        p.classList.remove('active');
+        p.setAttribute('aria-pressed', 'false');
+      });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
       applyFilters();
     }
 
@@ -144,10 +163,10 @@
               ${pdfUrl ? '<span class="badge-new"><i class="fas fa-file-pdf text-[10px]" aria-hidden="true"></i> PDF</span>' : '<span class="badge-new"><i class="fas fa-book-open text-[10px]" aria-hidden="true"></i> Guide</span>'}
               <span class="text-xs text-white/40 font-medium">${date}</span>
             </div>
-            <div class="w-11 h-11 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 text-sm mb-4 group-hover:scale-110 transition-transform">
+            <div class="w-11 h-11 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-300 text-sm mb-4 group-hover:scale-110 transition-transform">
               <i class="fas fa-file-alt" aria-hidden="true"></i>
             </div>
-            <h3 class="text-sm font-bold text-white mb-2 line-clamp-2 leading-snug group-hover:text-blue-400 transition-colors">${title}</h3>
+            <h3 class="text-sm font-bold text-white mb-2 line-clamp-2 leading-snug group-hover:text-blue-300 transition-colors">${title}</h3>
             ${catNames ? `<span class="text-[10px] text-white/40 font-medium mb-2">${catNames}</span>` : ''}
             <p class="text-white/50 text-xs leading-relaxed mb-5 line-clamp-3 flex-1">${desc}</p>
             <div class="flex gap-2 mt-auto">
