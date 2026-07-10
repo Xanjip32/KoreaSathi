@@ -1,3 +1,5 @@
+import { checkRateLimit } from './rate-limit.js';
+
 export default async function handler(req, res) {
   const ALLOWED_ORIGINS = ['https://koreasathi.com', 'http://localhost:3000'];
   const origin = req.headers.origin;
@@ -10,6 +12,11 @@ export default async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+
+  const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || 'unknown';
+  if (!checkRateLimit(clientIp)) {
+    return res.status(429).json({ error: 'Too many requests' });
+  }
 
   const channelId = req.query.channel_id || 'UCxHGYNiWoE-5zD4eN_-uQ8g';
 
@@ -43,7 +50,6 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ success: true, videos });
   } catch (err) {
-    console.error('YouTube feed error:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }

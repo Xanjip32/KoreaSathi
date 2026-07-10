@@ -7,6 +7,14 @@ const WP_SITE = 'koreasathi.wordpress.com';
 const WP_API_BASE = `https://public-api.wordpress.com/rest/v1.1/sites/${WP_SITE}`;
 const CACHE_TTL = 5 * 60 * 1000;
 
+function simpleHash(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = ((h << 5) - h + str.charCodeAt(i)) | 0;
+  }
+  return h;
+}
+
 function cacheGet(key) {
   try {
     const raw = localStorage.getItem('ks_cache_' + key);
@@ -16,13 +24,23 @@ function cacheGet(key) {
       localStorage.removeItem('ks_cache_' + key);
       return null;
     }
+    if (item.h !== undefined) {
+      const payload = JSON.stringify({ ts: item.ts, data: item.data });
+      if (item.h !== simpleHash(payload)) {
+        localStorage.removeItem('ks_cache_' + key);
+        return null;
+      }
+    }
     return item.data;
   } catch { return null; }
 }
 
 function cacheSet(key, data) {
   try {
-    localStorage.setItem('ks_cache_' + key, JSON.stringify({ ts: Date.now(), data }));
+    const ts = Date.now();
+    const payload = JSON.stringify({ ts, data });
+    const h = simpleHash(payload);
+    localStorage.setItem('ks_cache_' + key, JSON.stringify({ ts, data, h }));
   } catch {}
 }
 
@@ -148,7 +166,19 @@ export function formatDate(d) {
   } catch { return d; }
 }
 
+const ALLOWED_DOWNLOAD_HOSTS = ['koreasathi.wordpress.com', 'koreasathi.com', 'public-api.wordpress.com'];
+
 export function downloadFile(url, filename) {
+  try {
+    const parsed = new URL(url);
+    if (!ALLOWED_DOWNLOAD_HOSTS.some(host => parsed.hostname.endsWith(host))) {
+      console.warn('Blocked download from untrusted origin:', url);
+      return;
+    }
+  } catch {
+    console.warn('Invalid download URL:', url);
+    return;
+  }
   fetch(url)
     .then(r => { if (!r.ok) throw new Error('Failed'); return r.blob(); })
     .then(blob => {
@@ -161,5 +191,5 @@ export function downloadFile(url, filename) {
       document.body.removeChild(a);
       URL.revokeObjectURL(blobUrl);
     })
-    .catch(() => window.open(url, '_blank'));
+    .catch(() => {});
 }

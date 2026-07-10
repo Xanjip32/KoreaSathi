@@ -123,6 +123,8 @@ export function loadTikTokEmbedScript() {
   const s = document.createElement('script');
   s.src = 'https://www.tiktok.com/embed.js';
   s.async = true;
+  s.crossOrigin = 'anonymous';
+  s.referrerPolicy = 'no-referrer';
   document.body.appendChild(s);
 }
 
