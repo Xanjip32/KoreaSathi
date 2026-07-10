@@ -147,9 +147,11 @@ export function initGuide() {
           </div>`;
       }
 
-      const sanitizedContent = content ? DOMPurify.sanitize(content, {
-        ALLOWED_TAGS: ['p','br','strong','em','a','ul','ol','li','h1','h2','h3','h4','h5','h6','img','table','thead','tbody','tr','th','td','blockquote','pre','code','figure','figcaption','div','span','iframe','object','embed','hr','dl','dt','dd','details','summary','section','article'],
-        ALLOWED_ATTR: ['href','src','alt','title','class','style','width','height','frameborder','allow','allowfullscreen','loading','referrerpolicy','scrolling','data-src','id','target','rel','colspan','rowspan','scope','align','valign'],
+      // Strip style attributes before sanitization to prevent CSS data exfiltration
+      const contentNoStyle = content ? content.replace(/\s+style\s*=\s*(?:"[^"]*"|'[^'']*')/gi, '') : '';
+      const sanitizedContent = contentNoStyle ? DOMPurify.sanitize(contentNoStyle, {
+        ALLOWED_TAGS: ['p','br','strong','em','a','ul','ol','li','h2','h3','h4','h5','h6','img','table','thead','tbody','tr','th','td','blockquote','pre','code','figure','figcaption','div','span','iframe','object','embed','hr','dl','dt','dd','details','summary','section','article'],
+        ALLOWED_ATTR: ['href','src','alt','title','class','width','height','frameborder','allow','allowfullscreen','loading','referrerpolicy','scrolling','data-src','id','target','rel','colspan','rowspan','scope','align','valign'],
         ALLOW_DATA_ATTR: false,
       }) : '';
       guideBody.innerHTML = mediaHtml + (sanitizedContent || '<p class="text-white/30">No content available.</p>');

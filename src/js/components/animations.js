@@ -74,7 +74,7 @@ export function initAnimations() {
     observer.observe(el);
   });
 
-  // Re-observe on dynamic content
+  // Re-observe on dynamic content (disconnect after 10s — content is static after load)
   const mutationObserver = new MutationObserver((mutations) => {
     mutations.forEach(mutation => {
       mutation.addedNodes.forEach(node => {
@@ -87,6 +87,7 @@ export function initAnimations() {
   });
 
   mutationObserver.observe(document.body, { childList: true, subtree: true });
+  setTimeout(() => mutationObserver.disconnect(), 10000);
 }
 
 // Programmatic animation trigger

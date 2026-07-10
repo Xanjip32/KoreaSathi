@@ -1,8 +1,27 @@
 import { escapeHtml } from '../api.js';
-import { TIKTOK_USERNAME } from '../../data/tiktok-videos.js';
+import { TIKTOK_USERNAME, TIKTOK_VIDEOS } from '../../data/tiktok-videos.js';
 
 const OEMBED_CACHE = new Map();
 const OEMBED_CACHE_TTL = 24 * 60 * 60 * 1000;
+const OEMBED_CACHE_MAX = 100;
+
+function oembedCacheGet(key) {
+  const entry = OEMBED_CACHE.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.ts > OEMBED_CACHE_TTL) {
+    OEMBED_CACHE.delete(key);
+    return null;
+  }
+  return entry.data;
+}
+
+function oembedCacheSet(key, data) {
+  if (OEMBED_CACHE.size >= OEMBED_CACHE_MAX) {
+    const oldest = OEMBED_CACHE.keys().next().value;
+    OEMBED_CACHE.delete(oldest);
+  }
+  OEMBED_CACHE.set(key, { ts: Date.now(), data });
+}
 
 function getVideoIdFromUrl(url) {
   const match = url.match(/video\/(\d+)/);
@@ -10,22 +29,42 @@ function getVideoIdFromUrl(url) {
 }
 
 export async function fetchTikTokOembed(videoUrl) {
-  const cached = OEMBED_CACHE.get(videoUrl);
-  if (cached && Date.now() - cached.ts < OEMBED_CACHE_TTL) return cached.data;
+  const cached = oembedCacheGet(videoUrl);
+  if (cached) return cached;
 
   try {
-    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const base = isLocal ? '' : '';
-    const res = await fetch(`${base}/api/tiktok-oembed?url=${encodeURIComponent(videoUrl)}`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    const res = await fetch(`/api/tiktok-oembed?url=${encodeURIComponent(videoUrl)}`, {
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
     if (!res.ok) throw new Error(`oEmbed ${res.status}`);
     const json = await res.json();
     if (!json.success) throw new Error('oEmbed failed');
-    OEMBED_CACHE.set(videoUrl, { ts: Date.now(), data: json.data });
+    oembedCacheSet(videoUrl, json.data);
     return json.data;
   } catch (err) {
     console.warn('TikTok oEmbed failed for', videoUrl, err);
     return null;
   }
+}
+
+export async function loadTikTokVideos(seenIds = new Set()) {
+  const promises = TIKTOK_VIDEOS.filter(id => !seenIds.has(id)).map(async (videoId) => {
+    seenIds.add(videoId);
+    const videoUrl = `https://www.tiktok.com/@${TIKTOK_USERNAME}/video/${videoId}`;
+    const oembedData = await fetchTikTokOembed(videoUrl);
+    return {
+      type: 'tiktok',
+      videoId,
+      title: oembedData?.title || 'TikTok Video',
+      date: '',
+      oembedData,
+    };
+  });
+  const results = await Promise.allSettled(promises);
+  return results.filter(r => r.status === 'fulfilled').map(r => r.value);
 }
 
 export function renderYouTubeCard(videoId, title, date) {
@@ -59,17 +98,13 @@ export function renderYouTubeCard(videoId, title, date) {
 export function renderTikTokCard(videoId, oembedData, date) {
   const videoUrl = `https://www.tiktok.com/@${TIKTOK_USERNAME}/video/${videoId}`;
   const title = oembedData?.title || 'TikTok Video';
-  const thumbnail = oembedData?.thumbnail_url || null;
+
+  const embedHtml = oembedData?.html || '';
 
   return `
     <article class="group glass-card overflow-hidden p-2">
       <div class="relative rounded-xl overflow-hidden bg-dark-card">
-        <blockquote
-          class="tiktok-embed"
-          cite="${escapeHtml(videoUrl)}"
-          data-video-id="${escapeHtml(videoId)}"
-          style="max-width:100%;min-width:100%;"
-        ><section></section></blockquote>
+        ${embedHtml}
       </div>
       <div class="px-4 pb-4 pt-3">
         <h3 class="text-[13px] font-bold text-white mb-1.5 line-clamp-2 group-hover:text-primary transition-colors">${escapeHtml(title)}</h3>
@@ -106,26 +141,6 @@ export function renderYouTubeCardSkeleton() {
       </div>
     </div>
   `;
-}
-
-let tiktokEmbedScriptLoaded = false;
-export function loadTikTokEmbedScript() {
-  if (tiktokEmbedScriptLoaded) {
-    if (typeof tiktok !== 'undefined' && tiktok.embed) tiktok.embed();
-    return;
-  }
-  tiktokEmbedScriptLoaded = true;
-  const existing = document.querySelector('script[src="https://www.tiktok.com/embed.js"]');
-  if (existing) {
-    if (typeof tiktok !== 'undefined' && tiktok.embed) tiktok.embed();
-    return;
-  }
-  const s = document.createElement('script');
-  s.src = 'https://www.tiktok.com/embed.js';
-  s.async = true;
-  s.crossOrigin = 'anonymous';
-  s.referrerPolicy = 'no-referrer';
-  document.body.appendChild(s);
 }
 
 export function lazyLoadVideos(container) {

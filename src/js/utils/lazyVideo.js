@@ -25,9 +25,14 @@ export function initLazyVideos() {
           `;
         } else if (platform === 'tiktok') {
           container.innerHTML = `
-            <blockquote class="tiktok-embed" data-video-id="${videoId}" data-video-url="https://www.tiktok.com/@csjibu/video/${videoId}">
-            </blockquote>
-            <script async src="https://www.tiktok.com/embed.js"></script>
+            <iframe
+              src="https://www.tiktok.com/embed/v2/${videoId}"
+              class="w-full aspect-video rounded-xl"
+              style="border:0"
+              allowfullscreen
+              loading="lazy"
+              title="TikTok video"
+            ></iframe>
           `;
         }
 
@@ -41,13 +46,15 @@ export function initLazyVideos() {
 
   lazyContainers.forEach(container => videoObserver.observe(container));
 
-  // Fallback
+  // Fallback for browsers without IntersectionObserver
   if (!('IntersectionObserver' in window)) {
     lazyContainers.forEach(container => {
       const videoId = container.dataset.videoId;
       const platform = container.dataset.videoPlatform || 'youtube';
       if (platform === 'youtube') {
         container.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?rel=0" class="w-full aspect-video rounded-xl" allowfullscreen loading="lazy" title="Video"></iframe>`;
+      } else if (platform === 'tiktok') {
+        container.innerHTML = `<iframe src="https://www.tiktok.com/embed/v2/${videoId}" class="w-full aspect-video rounded-xl" style="border:0" allowfullscreen loading="lazy" title="TikTok video"></iframe>`;
       }
     });
   }

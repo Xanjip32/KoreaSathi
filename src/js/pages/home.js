@@ -1,12 +1,10 @@
 import { fetchPosts, getTitle, getContent, findPdfUrl, extractText, findVideoEmbed, formatDate, escapeHtml, downloadFile } from '../api.js';
-import { TIKTOK_VIDEOS, TIKTOK_USERNAME } from '../../data/tiktok-videos.js';
 import {
-  fetchTikTokOembed,
+  loadTikTokVideos,
   renderYouTubeCard,
   renderTikTokCard,
   renderYouTubeCardSkeleton,
   renderTikTokCardSkeleton,
-  loadTikTokEmbedScript,
   lazyLoadVideos,
 } from '../components/video-card.js';
 
@@ -88,29 +86,11 @@ export function initHomeVideos() {
 
   const seenVideoIds = new Set();
 
-  async function collectTikTokVideos() {
-    const results = [];
-    for (const videoId of TIKTOK_VIDEOS) {
-      if (seenVideoIds.has(videoId)) continue;
-      seenVideoIds.add(videoId);
-      const videoUrl = `https://www.tiktok.com/@${TIKTOK_USERNAME}/video/${videoId}`;
-      const oembedData = await fetchTikTokOembed(videoUrl);
-      results.push({
-        type: 'tiktok',
-        videoId,
-        title: oembedData?.title || 'TikTok Video',
-        date: '',
-        oembedData,
-      });
-    }
-    return results;
-  }
-
   async function loadVideos() {
     try {
       const [wpPosts, tiktokVideos] = await Promise.all([
         fetchPosts({ number: 20, order_by: 'date', order: 'DESC' }).catch(() => []),
-        collectTikTokVideos(),
+        loadTikTokVideos(seenVideoIds),
       ]);
 
       const wpVideos = wpPosts
@@ -156,7 +136,6 @@ export function initHomeVideos() {
       }).join('');
 
       lazyLoadVideos(container);
-      loadTikTokEmbedScript();
     } catch (err) {
       console.warn('Failed to load videos:', err);
       container.innerHTML = '<p class="text-white/30 text-center col-span-full py-10 text-sm">Could not load videos.</p>';

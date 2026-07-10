@@ -1,5 +1,7 @@
 import { checkRateLimit } from './rate-limit.js';
 
+const APP_USER_AGENT = 'KoreaSathi/2.0 (https://koreasathi.com; contact@koreasathi.com)';
+
 export default async function handler(req, res) {
   const ALLOWED_ORIGINS = ['https://koreasathi.com', 'http://localhost:3000'];
   const origin = req.headers.origin;
@@ -13,7 +15,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
-  const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || 'unknown';
+  const clientIp = req.headers['x-real-ip'] || req.headers['x-forwarded-for']?.split(',')[0]?.trim() || 'unknown';
   if (!checkRateLimit(clientIp)) {
     return res.status(429).json({ error: 'Too many requests' });
   }
@@ -33,7 +35,7 @@ export default async function handler(req, res) {
 
     const oembedUrl = `https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}`;
     const response = await fetch(oembedUrl, {
-      headers: { 'User-Agent': 'Mozilla/5.0' },
+      headers: { 'User-Agent': APP_USER_AGENT },
     });
 
     if (!response.ok) {

@@ -78,7 +78,7 @@ export function initFooter() {
         <!-- Bottom Bar -->
         <div class="border-t border-border pt-8">
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <p class="text-white/40 text-sm">
+            <p class="text-white/60 text-sm">
               &copy; ${new Date().getFullYear()} KoreaSathi. Free & Open Source. Built by students, for students.
             </p>
             <div class="flex items-center gap-6 text-sm">

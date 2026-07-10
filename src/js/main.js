@@ -1,13 +1,8 @@
 import { initNavbar, initHamburger } from './components/navbar.js';
 import { initFooter } from './components/footer.js';
-import { initBackToTop } from './utils/backToTop.js';
 import { initLazyVideos } from './utils/lazyVideo.js';
 import { initAnimations } from './components/animations.js';
-import { initDropdowns } from './utils/dropdowns.js';
-import { initModals } from './utils/modals.js';
-import { initTooltips } from './utils/tooltips.js';
-import { initTabs } from './utils/tabs.js';
-import { initAccordions } from './utils/accordions.js';
+import { initBackToTop, initDropdowns, initModals, initTooltips, initTabs, initAccordions } from './utils/ui-components.js';
 import { initAnalytics } from './analytics.js';
 import { initAds } from './ads.js';
 

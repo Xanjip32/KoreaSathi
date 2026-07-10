@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -69,7 +69,7 @@
     </div>
   </section>
 
-  <main id="main-content">
+  <main id="main-content" tabindex="-1">
 
     <section class="section-y relative overflow-hidden">
       <div class="grid-pattern"></div>
@@ -88,7 +88,8 @@
           <button class="filter-pill" data-category="banking" aria-pressed="false" onclick="filterByCategory('banking', this)">Banking</button>
           <button class="filter-pill" data-category="emergency" aria-pressed="false" onclick="filterByCategory('emergency', this)">Emergency</button>
         </div>
-        <div id="guidesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" data-aos="fade-up" data-aos-delay="100" aria-live="polite"></div>
+        <div id="guidesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" data-aos="fade-up" data-aos-delay="100"></div>
+        <p id="guidesCount" class="sr-only" aria-live="polite"></p>
         <aside class="ad-slot ad-slot--sidebar mt-10" data-ad-slot="sidebar" aria-hidden="true"></aside>
       </div>
     </section>
@@ -97,9 +98,20 @@
 
   <div data-footer></div>
   <script>
-    window.allGuidePosts = window.allGuidePosts || [];
+    let allGuidePosts = [];
     let currentCategory = 'all';
     let currentQuery = '';
+    window.addEventListener('guides:loaded', (e) => {
+      allGuidePosts = e.detail;
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchQ = urlParams.get('q');
+      if (searchQ) {
+        currentQuery = searchQ.toLowerCase().trim();
+        const searchInput = document.getElementById('guidesSearch');
+        if (searchInput) searchInput.value = searchQ;
+      }
+      applyFilters();
+    });
     function escapeHtml(str) {
       return String(str == null ? '' : str)
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -124,7 +136,7 @@
 
     function applyFilters() {
       const container = document.getElementById('guidesContainer');
-      const posts = window.allGuidePosts || [];
+      const posts = allGuidePosts;
       if (!container || !posts.length) return;
       let filtered = posts;
       if (currentCategory !== 'all') {
@@ -145,10 +157,13 @@
 
     function renderGuides(posts) {
       const container = document.getElementById('guidesContainer');
+      const count = document.getElementById('guidesCount');
       if (!posts.length) {
         container.innerHTML = '<p class="text-white/30 text-center col-span-full py-10 text-sm">No guides match your criteria.</p>';
+        if (count) count.textContent = 'No guides match your criteria.';
         return;
       }
+      if (count) count.textContent = posts.length + (posts.length === 1 ? ' guide shown.' : ' guides shown.');
       container.innerHTML = posts.map(post => {
         const title = escapeHtml(post.title || '');
         const desc = escapeHtml(post.desc || '');

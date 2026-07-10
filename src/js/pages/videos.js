@@ -1,13 +1,11 @@
 import { fetchPosts, getTitle, getContent, findVideoEmbed, formatDate, escapeHtml } from '../api.js';
-import { TIKTOK_VIDEOS, TIKTOK_USERNAME } from '../../data/tiktok-videos.js';
 import { fetchYouTubeVideos } from '../youtube.js';
 import {
-  fetchTikTokOembed,
+  loadTikTokVideos,
   renderYouTubeCard,
   renderTikTokCard,
   renderYouTubeCardSkeleton,
   renderTikTokCardSkeleton,
-  loadTikTokEmbedScript,
   lazyLoadVideos,
 } from '../components/video-card.js';
 
@@ -32,15 +30,17 @@ export function initVideos() {
     };
 
     tabsContainer.innerHTML = `
-      <button data-filter="all" class="video-tab ${currentFilter === 'all' ? 'active' : ''}">
-        All <span class="video-tab-count">${counts.all}</span>
-      </button>
-      <button data-filter="youtube" class="video-tab ${currentFilter === 'youtube' ? 'active' : ''}">
-        <i class="fab fa-youtube text-[11px]"></i> YouTube <span class="video-tab-count">${counts.youtube}</span>
-      </button>
-      <button data-filter="tiktok" class="video-tab ${currentFilter === 'tiktok' ? 'active' : ''}">
-        <i class="fab fa-tiktok text-[11px]"></i> TikTok <span class="video-tab-count">${counts.tiktok}</span>
-      </button>
+      <div role="tablist" aria-label="Filter videos by platform" class="flex flex-wrap gap-2">
+        <button role="tab" id="tab-all" aria-selected="${currentFilter === 'all'}" aria-controls="videosContainer" class="video-tab ${currentFilter === 'all' ? 'active' : ''}" data-filter="all">
+          All <span class="video-tab-count">${counts.all}</span>
+        </button>
+        <button role="tab" id="tab-youtube" aria-selected="${currentFilter === 'youtube'}" aria-controls="videosContainer" class="video-tab ${currentFilter === 'youtube' ? 'active' : ''}" data-filter="youtube">
+          <i class="fab fa-youtube text-[11px]"></i> YouTube <span class="video-tab-count">${counts.youtube}</span>
+        </button>
+        <button role="tab" id="tab-tiktok" aria-selected="${currentFilter === 'tiktok'}" aria-controls="videosContainer" class="video-tab ${currentFilter === 'tiktok' ? 'active' : ''}" data-filter="tiktok">
+          <i class="fab fa-tiktok text-[11px]"></i> TikTok <span class="video-tab-count">${counts.tiktok}</span>
+        </button>
+      </div>
     `;
 
     tabsContainer.querySelectorAll('.video-tab').forEach(btn => {
@@ -48,6 +48,17 @@ export function initVideos() {
         currentFilter = btn.dataset.filter;
         renderTabs();
         renderGrid();
+      });
+      // Arrow-key navigation per WAI-ARIA tabs pattern
+      btn.addEventListener('keydown', (e) => {
+        const tabs = Array.from(tabsContainer.querySelectorAll('[role="tab"]'));
+        const idx = tabs.indexOf(btn);
+        let next = null;
+        if (e.key === 'ArrowRight') next = tabs[(idx + 1) % tabs.length];
+        else if (e.key === 'ArrowLeft') next = tabs[(idx - 1 + tabs.length) % tabs.length];
+        else if (e.key === 'Home') next = tabs[0];
+        else if (e.key === 'End') next = tabs[tabs.length - 1];
+        if (next) { e.preventDefault(); next.focus(); next.click(); }
       });
     });
   }
@@ -81,18 +92,17 @@ export function initVideos() {
     }).join('');
 
     lazyLoadVideos(container);
-    loadTikTokEmbedScript();
   }
 
   async function loadAllVideos() {
     try {
+      const seenTikTokIds = new Set();
+
       const [wpPosts, tiktokVideos, ytVideos] = await Promise.all([
         fetchPosts({ number: 50, order_by: 'date', order: 'DESC' }).catch(() => []),
-        loadTikTokVideos(),
+        loadTikTokVideos(seenTikTokIds),
         fetchYouTubeVideos().catch(() => []),
       ]);
-
-      const seenTikTokIds = new Set(tiktokVideos.map(v => v.videoId));
 
       const wpVideos = wpPosts
         .filter(p => findVideoEmbed(getContent(p)) !== null)
@@ -112,7 +122,7 @@ export function initVideos() {
             date: formatDate(p.date),
           };
         })
-        .filter(Boolean);
+        .filter(p => p !== null);
 
       const youtubeVideos = ytVideos.map(v => ({
         type: 'youtube',
@@ -136,22 +146,6 @@ export function initVideos() {
         </div>
       `;
     }
-  }
-
-  async function loadTikTokVideos() {
-    const results = [];
-    for (const videoId of TIKTOK_VIDEOS) {
-      const videoUrl = `https://www.tiktok.com/@${TIKTOK_USERNAME}/video/${videoId}`;
-      const oembedData = await fetchTikTokOembed(videoUrl);
-      results.push({
-        type: 'tiktok',
-        videoId,
-        title: oembedData?.title || 'TikTok Video',
-        date: '',
-        oembedData,
-      });
-    }
-    return results;
   }
 
   loadAllVideos();

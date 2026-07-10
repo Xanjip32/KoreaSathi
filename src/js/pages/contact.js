@@ -22,8 +22,24 @@ export function initContact() {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
 
-    if (!data.name || !data.email || !data.message) {
-      showStatus('Please fill in all required fields.', 'error');
+    // Clear previous invalid states
+    ['name', 'email', 'message'].forEach(id => {
+      const el = document.getElementById(id);
+      el.removeAttribute('aria-invalid');
+      const err = document.getElementById(`${id}-err`);
+      err?.classList.add('hidden');
+    });
+
+    const missing = ['name', 'email', 'message'].filter(id => !String(data[id] || '').trim());
+    if (missing.length) {
+      missing.forEach(id => {
+        const el = document.getElementById(id);
+        el.setAttribute('aria-invalid', 'true');
+        const err = document.getElementById(`${id}-err`);
+        err?.classList.remove('hidden');
+      });
+      showStatus(`Please fill in the required field(s): ${missing.join(', ')}.`, 'error');
+      document.getElementById(missing[0])?.focus();
       return;
     }
 

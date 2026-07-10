@@ -62,7 +62,7 @@
     </div>
   </section>
 
-  <main id="main-content">
+  <main id="main-content" tabindex="-1">
 
     <section class="section-y relative overflow-hidden hero-gradient">
       <div class="grid-pattern"></div>
@@ -75,11 +75,13 @@
               <form id="contactForm" class="space-y-5" action="https://formspree.io/f/your-form-id" method="POST">
                 <div class="form-group">
                   <label for="name" class="form-label">Name *</label>
-                  <input type="text" id="name" name="name" autocomplete="name" required class="form-input" placeholder="Your name">
+                  <input type="text" id="name" name="name" autocomplete="name" required aria-required="true" aria-describedby="name-err" class="form-input" placeholder="Your name">
+                  <p id="name-err" class="form-error hidden">Name is required.</p>
                 </div>
                 <div class="form-group">
                   <label for="email" class="form-label">Email *</label>
-                  <input type="email" id="email" name="email" autocomplete="email" required class="form-input" placeholder="you@example.com">
+                  <input type="email" id="email" name="email" autocomplete="email" required aria-required="true" aria-describedby="email-err" class="form-input" placeholder="you@example.com">
+                  <p id="email-err" class="form-error hidden">Email is required.</p>
                 </div>
                 <div class="form-group">
                   <label for="subject" class="form-label">Subject</label>
@@ -87,7 +89,8 @@
                 </div>
                 <div class="form-group">
                   <label for="message" class="form-label">Message *</label>
-                  <textarea id="message" name="message" autocomplete="off" required rows="5" class="form-input resize-none" placeholder="Tell us what's on your mind..."></textarea>
+                  <textarea id="message" name="message" autocomplete="off" required aria-required="true" aria-describedby="message-err" rows="5" class="form-input resize-none" placeholder="Tell us what's on your mind..."></textarea>
+                  <p id="message-err" class="form-error hidden">Message is required.</p>
                 </div>
                 <button type="submit" class="btn-primary w-full sm:w-auto">
                   <i class="fas fa-paper-plane text-xs" aria-hidden="true"></i> Send Message

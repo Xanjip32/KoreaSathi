@@ -1,5 +1,7 @@
 import { checkRateLimit } from './rate-limit.js';
 
+const APP_USER_AGENT = 'KoreaSathi/2.0 (https://koreasathi.com; contact@koreasathi.com)';
+
 export default async function handler(req, res) {
   const ALLOWED_ORIGINS = ['https://koreasathi.com', 'http://localhost:3000'];
   const origin = req.headers.origin;
@@ -13,7 +15,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
-  const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || 'unknown';
+  const clientIp = req.headers['x-real-ip'] || req.headers['x-forwarded-for']?.split(',')[0]?.trim() || 'unknown';
   if (!checkRateLimit(clientIp)) {
     return res.status(429).json({ error: 'Too many requests' });
   }
@@ -29,7 +31,7 @@ export default async function handler(req, res) {
   try {
     const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(channelId)}`;
     const response = await fetch(feedUrl, {
-      headers: { 'User-Agent': 'Mozilla/5.0' },
+      headers: { 'User-Agent': APP_USER_AGENT },
     });
 
     if (!response.ok) {
@@ -42,11 +44,12 @@ export default async function handler(req, res) {
     const videos = entries.map(e => {
       const block = e[1];
       const videoId = (block.match(/<yt:videoId>([^<]+)<\/yt:videoId>/) || [])[1] || '';
-      const title = (block.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '';
+      const title = ((block.match(/<title[^>]*>([\s\S]*?)<\/title>/) || [])[1] || '').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '').substring(0, 200);
       const published = (block.match(/<published>([^<]+)<\/published>/) || [])[1] || '';
       const link = (block.match(/<link[^>]*href="([^"]+)"/) || [])[1] || '';
+      if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) return null;
       return { videoId, title, published, link };
-    }).slice(0, limit);
+    }).filter(v => v !== null).slice(0, limit);
 
     return res.status(200).json({ success: true, videos });
   } catch (err) {

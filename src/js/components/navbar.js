@@ -7,8 +7,6 @@ export function initNavbar() {
   const mobileMenuClose = document.getElementById('mobileMenuClose');
   const mobileMenuLinks = mobileMenu?.querySelectorAll('[data-page-link], [data-root-link]');
 
-  let scrollTimeout;
-
   // Scroll effect
   function handleScroll() {
     if (!navbar || !glassBg) return;
@@ -40,6 +38,24 @@ export function initNavbar() {
     // Move focus into the dialog
     mobileMenuClose?.focus();
 
+    // Focus trap inside the dialog
+    const trapFocus = (e) => {
+      if (e.key !== 'Tab') return;
+      const focusable = mobileMenu.querySelectorAll('a[href], button:not([disabled])');
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    mobileMenu._trapFocus = trapFocus;
+    mobileMenu.addEventListener('keydown', trapFocus);
+
     // Animate items
     mobileMenuLinks?.forEach((link, index) => {
       link.style.animation = 'none';
@@ -61,6 +77,10 @@ export function initNavbar() {
       mobileMenu.classList.add('translate-x-full');
       mobileMenu.setAttribute('inert', '');
       mobileMenuOverlay.setAttribute('inert', '');
+      if (mobileMenu._trapFocus) {
+        mobileMenu.removeEventListener('keydown', mobileMenu._trapFocus);
+        mobileMenu._trapFocus = null;
+      }
       hamburger.focus();
     }, 300);
   }
@@ -78,11 +98,12 @@ export function initNavbar() {
   });
 
   // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
+  const onKeyDown = (e) => {
     if (e.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('translate-x-full')) {
       closeMobileMenu();
     }
-  });
+  };
+  document.addEventListener('keydown', onKeyDown);
 
   // Handle root/page links
   handleNavLinks();

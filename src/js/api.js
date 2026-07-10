@@ -1,47 +1,17 @@
-// ============================================
-// KoreaSathi — WordPress API Layer
-// Modern ES module version with caching
-// ============================================
+import { cacheGet, cacheSet } from './utils/cache.js';
 
-const WP_SITE = 'koreasathi.wordpress.com';
-const WP_API_BASE = `https://public-api.wordpress.com/rest/v1.1/sites/${WP_SITE}`;
+const WP_API_BASE = '/wp-api';
 const CACHE_TTL = 5 * 60 * 1000;
 
-function simpleHash(str) {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) {
-    h = ((h << 5) - h + str.charCodeAt(i)) | 0;
+async function apiFetch(url, timeout = 15000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    return res;
+  } finally {
+    clearTimeout(id);
   }
-  return h;
-}
-
-function cacheGet(key) {
-  try {
-    const raw = localStorage.getItem('ks_cache_' + key);
-    if (!raw) return null;
-    const item = JSON.parse(raw);
-    if (Date.now() - item.ts > CACHE_TTL) {
-      localStorage.removeItem('ks_cache_' + key);
-      return null;
-    }
-    if (item.h !== undefined) {
-      const payload = JSON.stringify({ ts: item.ts, data: item.data });
-      if (item.h !== simpleHash(payload)) {
-        localStorage.removeItem('ks_cache_' + key);
-        return null;
-      }
-    }
-    return item.data;
-  } catch { return null; }
-}
-
-function cacheSet(key, data) {
-  try {
-    const ts = Date.now();
-    const payload = JSON.stringify({ ts, data });
-    const h = simpleHash(payload);
-    localStorage.setItem('ks_cache_' + key, JSON.stringify({ ts, data, h }));
-  } catch {}
 }
 
 export async function fetchPosts(params = {}) {
@@ -53,10 +23,10 @@ export async function fetchPosts(params = {}) {
     ...params
   });
   const cacheKey = 'posts_' + query.toString();
-  const cached = cacheGet(cacheKey);
+  const cached = cacheGet(cacheKey, CACHE_TTL);
   if (cached) return cached;
 
-  const res = await fetch(`${WP_API_BASE}/posts?${query}`);
+  const res = await apiFetch(`${WP_API_BASE}/posts?${query}`);
   if (!res.ok) throw new Error(`WP API error: ${res.status}`);
   const json = await res.json();
   const data = json.posts || [];
@@ -66,10 +36,10 @@ export async function fetchPosts(params = {}) {
 
 export async function fetchCategories() {
   const cacheKey = 'categories';
-  const cached = cacheGet(cacheKey);
+  const cached = cacheGet(cacheKey, CACHE_TTL);
   if (cached) return cached;
 
-  const res = await fetch(`${WP_API_BASE}/categories`);
+  const res = await apiFetch(`${WP_API_BASE}/categories`);
   if (!res.ok) throw new Error(`WP API error: ${res.status}`);
   const json = await res.json();
   const data = json.categories || [];
@@ -79,10 +49,10 @@ export async function fetchCategories() {
 
 export async function fetchPost(id) {
   const cacheKey = 'post_' + id;
-  const cached = cacheGet(cacheKey);
+  const cached = cacheGet(cacheKey, CACHE_TTL);
   if (cached) return cached;
 
-  const res = await fetch(`${WP_API_BASE}/posts/${id}?fields=ID,title,content,excerpt,date,modified,categories,like_count,URL`);
+  const res = await apiFetch(`${WP_API_BASE}/posts/${id}?fields=ID,title,content,excerpt,date,modified,categories,like_count,URL`);
   if (!res.ok) throw new Error(`WP API error: ${res.status}`);
   const json = await res.json();
   cacheSet(cacheKey, json);
@@ -166,21 +136,19 @@ export function formatDate(d) {
   } catch { return d; }
 }
 
-const ALLOWED_DOWNLOAD_HOSTS = ['koreasathi.wordpress.com', 'koreasathi.com', 'public-api.wordpress.com'];
+const ALLOWED_DOWNLOAD_HOSTS = new Set(['koreasathi.wordpress.com', 'koreasathi.files.wordpress.com', 'koreasathi.com', 'public-api.wordpress.com']);
 
 export function downloadFile(url, filename) {
   try {
     const parsed = new URL(url);
-    if (!ALLOWED_DOWNLOAD_HOSTS.some(host => parsed.hostname.endsWith(host))) {
-      console.warn('Blocked download from untrusted origin:', url);
+    if (!ALLOWED_DOWNLOAD_HOSTS.has(parsed.hostname)) {
       return;
     }
   } catch {
-    console.warn('Invalid download URL:', url);
     return;
   }
   fetch(url)
-    .then(r => { if (!r.ok) throw new Error('Failed'); return r.blob(); })
+    .then(r => { if (!r.ok) throw new Error(); return r.blob(); })
     .then(blob => {
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -191,5 +159,13 @@ export function downloadFile(url, filename) {
       document.body.removeChild(a);
       URL.revokeObjectURL(blobUrl);
     })
-    .catch(() => {});
+    .catch(() => {
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
 }
