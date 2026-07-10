@@ -28,12 +28,17 @@ export function initNavbar() {
   function openMobileMenu() {
     if (!mobileMenu || !mobileMenuOverlay || !hamburger) return;
 
+    mobileMenu.removeAttribute('inert');
+    mobileMenuOverlay.removeAttribute('inert');
     mobileMenuOverlay.classList.remove('hidden');
     mobileMenu.classList.remove('translate-x-full');
     mobileMenuOverlay.style.opacity = '1';
     mobileMenu.style.transform = 'translateX(0)';
     hamburger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+
+    // Move focus into the dialog
+    mobileMenuClose?.focus();
 
     // Animate items
     mobileMenuLinks?.forEach((link, index) => {
@@ -54,6 +59,9 @@ export function initNavbar() {
     setTimeout(() => {
       mobileMenuOverlay.classList.add('hidden');
       mobileMenu.classList.add('translate-x-full');
+      mobileMenu.setAttribute('inert', '');
+      mobileMenuOverlay.setAttribute('inert', '');
+      hamburger.focus();
     }, 300);
   }
 

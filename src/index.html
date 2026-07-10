@@ -40,17 +40,10 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-  <!-- Owl Carousel CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-
   <!-- Tailwind CSS (compiled) -->
   <link rel="stylesheet" href="css/styles.css">
 
-  <style>
-    body { background: #151A28; color: #F1F5F9; font-family: 'Inter', system-ui, sans-serif; margin: 0; overflow-x: hidden; }
-    .hero-gradient { background: linear-gradient(180deg, #071A35 0%, #102E5A 50%, #173D6B 100%); }
-  </style>
+  <meta name="theme-color" content="#071A35">
 </head>
 <body class="antialiased">
   <a href="#main-content" class="skip-link">Skip to content</a>
@@ -59,7 +52,7 @@
   <div class="ad-slot ad-slot--top" data-ad-slot="top" aria-hidden="true"></div>
 
   <!-- HERO -->
-  <section class="relative min-h-[90vh] flex items-center overflow-hidden" style="background: linear-gradient(180deg, #071A35 0%, #102E5A 50%, #173D6B 100%);">
+  <section class="relative min-h-[90vh] flex items-center overflow-hidden hero-gradient">
     <div class="absolute inset-0 pointer-events-none z-0">
       <div class="absolute inset-0" style="background: url('assets/images/hero_background.webp') center/cover; opacity: 0.55;"></div>
       <div class="absolute inset-0" style="background: rgba(7,26,53,0.45);"></div>
@@ -84,16 +77,17 @@
         </p>
 
         <!-- Search Bar -->
-        <div class="hero-search-wrapper mb-10">
+        <form class="hero-search-wrapper mb-10" action="pages/guides.html" method="get" role="search">
+          <label for="homeSearch" class="sr-only">Search guides, videos, resources</label>
           <div class="search-bar">
-            <i class="fas fa-search search-bar-icon"></i>
-            <input type="text" class="search-bar-input" placeholder="Search guides, videos, resources..." id="homeSearch" onkeydown="if(event.key==='Enter'){const v=this.value.trim();if(v){window.location.href='pages/guides.html?q='+encodeURIComponent(v)}}">
+            <i class="fas fa-search search-bar-icon" aria-hidden="true"></i>
+            <input type="search" name="q" class="search-bar-input" placeholder="Search guides, videos, resources..." id="homeSearch">
           </div>
-        </div>
+        </form>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <a href="pages/guides.html" class="btn-primary">Explore Guides <i class="fas fa-arrow-right text-xs"></i></a>
-          <a href="pages/videos.html" class="btn-outline"><i class="fas fa-play text-xs"></i> Watch Videos</a>
+          <a href="pages/guides.html" class="btn-primary">Explore Guides <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
+          <a href="pages/videos.html" class="btn-outline"><i class="fas fa-play text-xs" aria-hidden="true"></i> Watch Videos</a>
         </div>
 
         <!-- Stats -->
@@ -120,27 +114,27 @@
     <div class="container-custom">
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4" data-aos="fade-up" data-aos-delay="200">
         <a href="pages/guides.html" class="quick-card text-center">
-          <div class="quick-card-icon mx-auto bg-blue-500/10 text-blue-600"><i class="fas fa-id-card"></i></div>
+          <div class="quick-card-icon mx-auto bg-blue-500/10 text-blue-600"><i class="fas fa-id-card" aria-hidden="true"></i></div>
           <h3 class="text-sm font-bold text-white mb-1">Work Permit</h3>
           <p class="text-white/60 text-[11px] leading-relaxed">D-2 visa &amp; part-time work rules</p>
         </a>
         <a href="pages/guides.html" class="quick-card text-center">
-          <div class="quick-card-icon mx-auto bg-green-500/10 text-green-600"><i class="fas fa-briefcase"></i></div>
+          <div class="quick-card-icon mx-auto bg-green-500/10 text-green-600"><i class="fas fa-briefcase" aria-hidden="true"></i></div>
           <h3 class="text-sm font-bold text-white mb-1">Part-time Jobs</h3>
           <p class="text-white/60 text-[11px] leading-relaxed">Find &amp; apply for jobs legally</p>
         </a>
         <a href="pages/guides.html" class="quick-card text-center">
-          <div class="quick-card-icon mx-auto bg-purple-500/10 text-purple-600"><i class="fas fa-passport"></i></div>
+          <div class="quick-card-icon mx-auto bg-purple-500/10 text-purple-600"><i class="fas fa-passport" aria-hidden="true"></i></div>
           <h3 class="text-sm font-bold text-white mb-1">Visa &amp; Immigration</h3>
           <p class="text-white/60 text-[11px] leading-relaxed">Visa extensions &amp; status changes</p>
         </a>
         <a href="pages/guides.html" class="quick-card text-center">
-          <div class="quick-card-icon mx-auto bg-orange-500/10 text-orange-600"><i class="fas fa-house-chimney"></i></div>
+          <div class="quick-card-icon mx-auto bg-orange-500/10 text-orange-600"><i class="fas fa-house-chimney" aria-hidden="true"></i></div>
           <h3 class="text-sm font-bold text-white mb-1">Housing</h3>
           <p class="text-white/60 text-[11px] leading-relaxed">Goshiwon, one-room &amp; deposits</p>
         </a>
         <a href="pages/guides.html" class="quick-card text-center">
-          <div class="quick-card-icon mx-auto bg-emerald-500/10 text-emerald-600"><i class="fas fa-building-columns"></i></div>
+          <div class="quick-card-icon mx-auto bg-emerald-500/10 text-emerald-600"><i class="fas fa-building-columns" aria-hidden="true"></i></div>
           <h3 class="text-sm font-bold text-white mb-1">Banking</h3>
           <p class="text-white/60 text-[11px] leading-relaxed">Bank accounts &amp; remittance</p>
         </a>
@@ -166,7 +160,7 @@
             <h2 class="section-title">Start with the most important steps</h2>
             <p class="section-subtitle mt-3">Beginner-friendly guide areas for students preparing for life in Korea.</p>
           </div>
-          <a href="pages/guides.html" class="section-action">View all guides <i class="fas fa-arrow-right text-xs"></i></a>
+          <a href="pages/guides.html" class="section-action">View all guides <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
         </div>
         <div id="homeGuidesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5" data-aos="fade-up" data-aos-delay="100"></div>
       </div>
@@ -183,22 +177,22 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <div class="glass-card p-6 lg:p-7" data-aos="fade-up" data-aos-delay="100">
-            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center text-lg mb-5 transition-transform"><i class="fas fa-shield-halved"></i></div>
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center text-lg mb-5 transition-transform"><i class="fas fa-shield-halved" aria-hidden="true"></i></div>
             <h3 class="text-lg font-bold text-white mb-2 tracking-tight">Trusted Information</h3>
             <p class="text-white/60 text-sm leading-relaxed">All guides are verified and up-to-date. We work to eliminate misinformation and provide accurate resources.</p>
           </div>
           <div class="glass-card p-6 lg:p-7" data-aos="fade-up" data-aos-delay="200">
-            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center text-lg mb-5 transition-transform"><i class="fas fa-book-open"></i></div>
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center text-lg mb-5 transition-transform"><i class="fas fa-book-open" aria-hidden="true"></i></div>
             <h3 class="text-lg font-bold text-white mb-2 tracking-tight">Comprehensive Guides</h3>
             <p class="text-white/60 text-sm leading-relaxed">From work permits and immigration to finding jobs and housing, we cover everything you need to know.</p>
           </div>
           <div class="glass-card p-6 lg:p-7" data-aos="fade-up" data-aos-delay="300">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-lg mb-5 transition-transform"><i class="fas fa-users"></i></div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-lg mb-5 transition-transform"><i class="fas fa-users" aria-hidden="true"></i></div>
             <h3 class="text-lg font-bold text-white mb-2 tracking-tight">Community Driven</h3>
             <p class="text-white/60 text-sm leading-relaxed">Built by students who understand the struggle. We are constantly improving based on real student feedback.</p>
           </div>
           <div class="glass-card p-6 lg:p-7" data-aos="fade-up" data-aos-delay="400">
-            <div class="w-12 h-12 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center text-lg mb-5 transition-transform"><i class="fas fa-globe"></i></div>
+            <div class="w-12 h-12 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center text-lg mb-5 transition-transform"><i class="fas fa-globe" aria-hidden="true"></i></div>
             <h3 class="text-lg font-bold text-white mb-2 tracking-tight">100% Free &amp; Open Source</h3>
             <p class="text-white/60 text-sm leading-relaxed">No hidden fees, no subscriptions. Everything is free, open source, and available to everyone forever.</p>
           </div>
@@ -208,7 +202,7 @@
             <p class="text-white/60 text-sm leading-relaxed">Quick access to embassy contacts, labor rights support, and essential emergency resources when you need them most.</p>
           </div>
           <div class="glass-card p-6 lg:p-7" data-aos="fade-up" data-aos-delay="600">
-            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center text-lg mb-5 transition-transform"><i class="fas fa-video"></i></div>
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center text-lg mb-5 transition-transform"><i class="fas fa-video" aria-hidden="true"></i></div>
             <h3 class="text-lg font-bold text-white mb-2 tracking-tight">Video Resources</h3>
             <p class="text-white/60 text-sm leading-relaxed">Visual learners can watch video guides, student vlogs, and walkthroughs to better understand the processes.</p>
           </div>
@@ -227,7 +221,7 @@
             <h2 class="section-title text-3xl sm:text-4xl">Latest from our community</h2>
             <p class="section-subtitle mt-3">YouTube guides and TikTok shorts — quick tips for students in Korea.</p>
           </div>
-          <a href="pages/videos.html" class="section-action">View all videos <i class="fas fa-arrow-right text-xs"></i></a>
+          <a href="pages/videos.html" class="section-action">View all videos <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
         </div>
         <div id="homeVideosContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5" data-aos="fade-up" data-aos-delay="100"></div>
       </div>
@@ -244,7 +238,7 @@
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-5">Ready to start your journey?</h2>
             <p class="text-white/40 text-base max-w-lg mx-auto mb-8 lg:mb-10">Explore our comprehensive guides and video resources designed specifically for students in Korea.</p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="pages/guides.html" class="btn-primary">Browse Guides <i class="fas fa-arrow-right text-xs"></i></a>
+              <a href="pages/guides.html" class="btn-primary">Browse Guides <i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></a>
               <a href="pages/contact.html" class="btn-outline">Get in Touch</a>
             </div>
           </div>
@@ -258,8 +252,6 @@
   <div data-footer></div>
 
   <!-- Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-  <script src="dist/js/main.js" type="module"></script>
+  <script src="js/main.js" type="module"></script>
 </body>
 </html>

@@ -42,6 +42,41 @@ function injectArticleJsonLd(post) {
   } catch (e) { /* non-fatal */ }
 }
 
+// Update <title>, OG/Twitter tags, canonical, and article:* meta from the
+// fetched post so each guide is uniquely indexable and shareable.
+function updateDocumentMeta(post) {
+  try {
+    const title = getTitle(post);
+    const excerpt = getExcerpt(post) || 'Student guide on KoreaSathi.';
+    const url = 'https://koreasathi.com/guide?id=' + post.ID;
+    const img = 'https://koreasathi.com/assets/images/guides_bg.webp';
+    document.title = title + ' - KoreaSathi';
+    const setMeta = (selector, attr, value) => {
+      const el = document.head.querySelector(selector);
+      if (el) el.setAttribute(attr, value);
+    };
+    setMeta('meta[property="og:url"]', 'content', url);
+    setMeta('meta[property="og:title"]', 'content', title);
+    setMeta('meta[property="og:description"]', 'content', excerpt);
+    setMeta('meta[property="og:image"]', 'content', img);
+    setMeta('meta[name="twitter:title"]', 'content', title);
+    setMeta('meta[name="twitter:description"]', 'content', excerpt);
+    setMeta('meta[name="twitter:image"]', 'content', img);
+    setMeta('meta[name="description"]', 'content', excerpt);
+    const canonical = document.head.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', url);
+    const setArticle = (prop, value) => {
+      let el = document.head.querySelector(`meta[property="${prop}"]`);
+      if (!el) { el = document.createElement('meta'); el.setAttribute('property', prop); document.head.appendChild(el); }
+      el.setAttribute('content', value);
+    };
+    if (post.date) setArticle('article:published_time', post.date);
+    if (post.modified || post.date) setArticle('article:modified_time', post.modified || post.date);
+    setArticle('article:author', 'KoreaSathi');
+    setArticle('article:section', 'Student Guides');
+  } catch (e) { /* non-fatal */ }
+}
+
 export function initGuide() {
   const guideBody = document.getElementById('guideBody');
   const guideTitle = document.getElementById('guideTitle');
@@ -65,6 +100,7 @@ export function initGuide() {
     .then(post => {
       if (guideTitle) guideTitle.textContent = getTitle(post);
       if (guideDate) guideDate.textContent = formatDate(post.date);
+      updateDocumentMeta(post);
 
       const rawContent = getContent(post) || '';
       const pdfUrl = findPdfUrl(rawContent);

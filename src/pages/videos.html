@@ -20,34 +20,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="../css/styles.css">
-   <style>
-    body { background: #151A28; color: #F1F5F9; font-family: 'Inter', system-ui, sans-serif; margin: 0; overflow-x: hidden; }
-    .hero-gradient { background: linear-gradient(180deg, #071A35 0%, #102E5A 50%, #173D6B 100%); }
-    .video-tab {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 16px; border-radius: 12px; font-size: 13px; font-weight: 600;
-      color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06); cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .video-tab:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
-    .video-tab.active {
-      color: #fff; background: rgba(59,130,246,0.15);
-      border-color: rgba(59,130,246,0.3); box-shadow: 0 0 20px rgba(59,130,246,0.1);
-    }
-    .video-tab-count {
-      font-size: 10px; padding: 1px 6px; border-radius: 6px;
-      background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4);
-    }
-    .video-tab.active .video-tab-count { background: rgba(59,130,246,0.2); color: rgba(96,165,250,0.9); }
-  </style>
 </head>
 <body class="antialiased">
   <a href="#main-content" class="skip-link">Skip to content</a>
   <div data-navbar></div>
   <div class="ad-slot ad-slot--top" data-ad-slot="top" aria-hidden="true"></div>
 
-  <section class="relative py-24 sm:py-28 lg:py-32 overflow-hidden" style="background: linear-gradient(180deg, #071A35 0%, #102E5A 50%, #173D6B 100%);">
+  <section class="relative py-24 sm:py-28 lg:py-32 overflow-hidden hero-gradient">
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute inset-0" style="background: url('../assets/images/video_bg.webp') center/cover; opacity: 0.5;"></div>
       <div class="absolute inset-0" style="background: rgba(7,26,53,0.45);"></div>
@@ -75,7 +54,7 @@
             <p class="text-white/40 text-base mt-3">YouTube guides and TikTok shorts covering every topic.</p>
           </div>
           <a href="https://www.tiktok.com/@csjibu" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 font-bold text-sm px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all whitespace-nowrap self-start sm:self-auto">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.51a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.87a8.16 8.16 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.3z"/></svg>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-tiktok"/></svg>
             @csjibu
           </a>
         </div>
@@ -89,7 +68,6 @@
   </main>
 
   <div data-footer></div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../js/main.js" type="module"></script>
 </body>
 </html>

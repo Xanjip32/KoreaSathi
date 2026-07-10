@@ -19,13 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
   <link rel="stylesheet" href="../css/styles.css">
-   <style>
-    body { background: #151A28; color: #F1F5F9; font-family: 'Inter', system-ui, sans-serif; margin: 0; overflow-x: hidden; }
-    .hero-gradient { background: linear-gradient(180deg, #071A35 0%, #102E5A 50%, #173D6B 100%); }
-  </style>
 </head>
 <body class="antialiased">
   <a href="#main-content" class="skip-link">Skip to content</a>
@@ -33,7 +27,7 @@
   <div class="ad-slot ad-slot--top" data-ad-slot="top" aria-hidden="true"></div>
 
   <!-- HERO -->
-  <section class="relative py-28 sm:py-32 lg:py-36 overflow-hidden" style="background: linear-gradient(180deg, #071A35 0%, #102E5A 50%, #173D6B 100%);">
+  <section class="relative py-28 sm:py-32 lg:py-36 overflow-hidden hero-gradient">
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute inset-0" style="background: url('../assets/images/guides_bg.webp') center/cover; opacity: 0.5;"></div>
       <div class="absolute inset-0" style="background: rgba(7,26,53,0.45);"></div>
@@ -50,8 +44,9 @@
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-4">Student Guides &amp; Resources</h1>
         <p class="text-white/60 text-base sm:text-lg max-w-xl mx-auto mb-8">Everything you need to know about living, working, and studying in Korea — all in one place.</p>
         <div class="search-bar">
-          <i class="fas fa-search search-bar-icon"></i>
-          <input type="text" class="search-bar-input" placeholder="Search guides by keyword..." id="guidesSearch" oninput="filterGuides()">
+          <i class="fas fa-search search-bar-icon" aria-hidden="true"></i>
+          <label for="guidesSearch" class="sr-only">Search guides by keyword</label>
+          <input type="search" class="search-bar-input" placeholder="Search guides by keyword..." id="guidesSearch" oninput="filterGuides()">
         </div>
       </div>
     </div>
@@ -67,7 +62,7 @@
           <h2 class="section-title">Browse our library</h2>
           <p class="section-subtitle mt-3 mx-auto">Download PDF guides covering every aspect of student life in Korea.</p>
         </div>
-        <div class="filter-pills mb-10" id="categoryFilters" data-aos="fade-up" data-aos-delay="50">
+        <div class="filter-pills mb-10" id="categoryFilters" role="group" aria-label="Filter guides by category" data-aos="fade-up" data-aos-delay="50">
           <button class="filter-pill active" data-category="all" onclick="filterByCategory('all', this)">All</button>
           <button class="filter-pill" data-category="work" onclick="filterByCategory('work', this)">Work Permit</button>
           <button class="filter-pill" data-category="visa" onclick="filterByCategory('visa', this)">Visa &amp; Immigration</button>
@@ -76,7 +71,7 @@
           <button class="filter-pill" data-category="banking" onclick="filterByCategory('banking', this)">Banking</button>
           <button class="filter-pill" data-category="emergency" onclick="filterByCategory('emergency', this)">Emergency</button>
         </div>
-        <div id="guidesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" data-aos="fade-up" data-aos-delay="100"></div>
+        <div id="guidesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" data-aos="fade-up" data-aos-delay="100" aria-live="polite"></div>
         <aside class="ad-slot ad-slot--sidebar mt-10" data-ad-slot="sidebar" aria-hidden="true"></aside>
       </div>
     </section>
@@ -88,6 +83,11 @@
     window.allGuidePosts = window.allGuidePosts || [];
     let currentCategory = 'all';
     let currentQuery = '';
+    function escapeHtml(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
 
     function filterByCategory(cat, btn) {
       currentCategory = cat;
@@ -129,21 +129,21 @@
         return;
       }
       container.innerHTML = posts.map(post => {
-        const title = post.title || '';
-        const desc = post.desc || '';
-        const pdfUrl = post.pdfUrl || '';
-        const url = post.url || '';
-        const date = post.date || '';
-        const catNames = post.categories ? Object.values(post.categories).map(c => c.name || c).join(', ') : '';
-        const guideLink = 'guide.html#id=' + encodeURIComponent(post.id);
+        const title = escapeHtml(post.title || '');
+        const desc = escapeHtml(post.desc || '');
+        const pdfUrl = escapeHtml(post.pdfUrl || '');
+        const url = escapeHtml(post.url || '');
+        const date = escapeHtml(post.date || '');
+        const catNames = post.categories ? Object.values(post.categories).map(c => escapeHtml(c.name || c)).join(', ') : '';
+        const guideLink = 'guide.html?id=' + encodeURIComponent(post.id);
         return `
           <article class="group glass-card p-6 flex flex-col">
             <div class="flex items-center justify-between mb-4">
-              ${pdfUrl ? '<span class="badge-new"><i class="fas fa-file-pdf text-[10px]"></i> PDF</span>' : '<span class="badge-new"><i class="fas fa-book-open text-[10px]"></i> Guide</span>'}
+              ${pdfUrl ? '<span class="badge-new"><i class="fas fa-file-pdf text-[10px]" aria-hidden="true"></i> PDF</span>' : '<span class="badge-new"><i class="fas fa-book-open text-[10px]" aria-hidden="true"></i> Guide</span>'}
               <span class="text-xs text-white/40 font-medium">${date}</span>
             </div>
             <div class="w-11 h-11 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 text-sm mb-4 group-hover:scale-110 transition-transform">
-              <i class="fas fa-file-alt"></i>
+              <i class="fas fa-file-alt" aria-hidden="true"></i>
             </div>
             <h3 class="text-sm font-bold text-white mb-2 line-clamp-2 leading-snug group-hover:text-blue-400 transition-colors">${title}</h3>
             ${catNames ? `<span class="text-[10px] text-white/40 font-medium mb-2">${catNames}</span>` : ''}
@@ -151,15 +151,13 @@
             <div class="flex gap-2 mt-auto">
               <a href="${guideLink}" class="flex-1 text-center btn-primary btn-sm">Read Guide</a>
               ${pdfUrl ? `<button class="flex-1 text-center btn-outline btn-sm" onclick="window.downloadPdf('${pdfUrl}', '${title.replace(/'/g, "\\'")}')">Download</button>` : ''}
-              ${url ? `<a href="${url}" target="_blank" rel="noopener" class="flex-1 text-center btn-ghost btn-sm" title="View on WordPress"><i class="fas fa-external-link-alt"></i></a>` : ''}
+              ${url ? `<a href="${url}" target="_blank" rel="noopener" class="flex-1 text-center btn-ghost btn-sm" title="View on WordPress" aria-label="View on WordPress"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>` : ''}
             </div>
           </article>
         `;
       }).join('');
     }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
   <script src="../js/main.js" type="module"></script>
 </body>
 </html>
