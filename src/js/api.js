@@ -1,6 +1,9 @@
 import { cacheGet, cacheSet } from './utils/cache.js';
 
-const WP_API_BASE = '/wp-api';
+const WP_SITE = 'koreasathi.wordpress.com';
+const WP_API_BASE = (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+  ? `https://public-api.wordpress.com/rest/v1.1/sites/${WP_SITE}`
+  : '/wp-api';
 const CACHE_TTL = 5 * 60 * 1000;
 
 async function apiFetch(url, timeout = 15000) {
