@@ -1,4 +1,4 @@
-import { fetchPost, getTitle, getContent, findPdfUrl, findVideoEmbed, formatDate, escapeHtml, downloadFile } from '../api.js';
+import { fetchPost, getTitle, getContent, getExcerpt, findPdfUrl, findVideoEmbed, formatDate, escapeHtml, downloadFile } from '../api.js';
 
 // Remove the raw WordPress media blocks (PDF file block + TikTok embed figure)
 // because we render those as clean media blocks above the article body.
@@ -10,6 +10,36 @@ function stripEmbeddedMedia(html) {
   // Remove the TikTok embed figure: <figure ... wp-block-embed-tiktok ...>...</figure>
   cleaned = cleaned.replace(/<figure[^>]*class="[^"]*wp-block-embed-tiktok[^"]*"[^>]*>[\s\S]*?<\/figure>/gi, '');
   return cleaned;
+}
+
+// Inject Article structured data (JSON-LD) so search engines understand
+// the guide is an article with a title, date, and author.
+function injectArticleJsonLd(post) {
+  try {
+    const existing = document.getElementById('guide-jsonld');
+    if (existing) existing.remove();
+    const data = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      'headline': getTitle(post),
+      'datePublished': post.date || '',
+      'dateModified': post.modified || post.date || '',
+      'author': { '@type': 'Organization', 'name': 'KoreaSathi' },
+      'publisher': {
+        '@type': 'Organization',
+        'name': 'KoreaSathi',
+        'logo': { '@type': 'ImageObject', 'url': 'https://koreasathi.com/assets/images/hero_background.webp' }
+      },
+      'description': getExcerpt(post) || 'Student guide on KoreaSathi.',
+      'mainEntityOfPage': 'https://koreasathi.com/guide?id=' + post.ID
+    };
+    if (post.URL) data['sameAs'] = post.URL;
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'guide-jsonld';
+    script.textContent = JSON.stringify(data);
+    document.head.appendChild(script);
+  } catch (e) { /* non-fatal */ }
 }
 
 export function initGuide() {
@@ -80,6 +110,9 @@ export function initGuide() {
         sourceLink.href = sourceUrl;
         sourceLink.classList.remove('hidden');
       }
+
+      // Inject Article structured data (JSON-LD) for SEO
+      injectArticleJsonLd(post);
     })
     .catch(err => {
       console.warn('Failed to load guide:', err);

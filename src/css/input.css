@@ -373,3 +373,91 @@
 ::-webkit-scrollbar-thumb { background: #2A3447; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #3A465C; }
 * { scrollbar-width: thin; scrollbar-color: #2A3447 #151A28; }
+
+/* ============================================================
+   Advertisement & Sponsorship slots (monetization-ready)
+   ------------------------------------------------------------
+   These containers are HIDDEN by default and only become visible
+   when a slot is enabled in src/js/ads.js AND has content.
+   Fixed dimensions reserve space up front to prevent Cumulative
+   Layout Shift (CLS). No ad is shown until intentionally activated.
+   ============================================================ */
+.ad-slot {
+  display: none;            /* hidden until enabled + populated */
+  width: 100%;
+  margin: 0 auto;
+}
+.ad-slot.is-active {
+  display: block;
+}
+/* Top banner (below navbar) */
+.ad-slot--top {
+  max-width: 970px;
+  min-height: 90px;
+}
+/* Sidebar ad (desktop only) */
+.ad-slot--sidebar {
+  max-width: 300px;
+  min-height: 250px;
+}
+/* In-article sponsor block */
+.ad-slot--inarticle {
+  max-width: 728px;
+  min-height: 90px;
+}
+/* Footer sponsor section */
+.ad-slot--footer {
+  max-width: 100%;
+  min-height: 120px;
+}
+.ad-slot__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: inherit;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  overflow: hidden;
+}
+.ad-slot__label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 6px;
+}
+.ad-sponsor {
+  display: none;
+}
+.ad-sponsor.is-active {
+  display: block;
+}
+.sponsor-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+}
+.sponsor-card__logo { width: 56px; height: 56px; border-radius: 12px; object-fit: contain; background: #fff; }
+.sponsor-card__name { font-weight: 700; color: #fff; font-size: 15px; }
+.sponsor-card__desc { color: rgba(255,255,255,0.55); font-size: 13px; line-height: 1.4; }
+.sponsor-card__cta {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 10px;
+  background: linear-gradient(135deg, #3B82F6, #2563EB);
+  color: #fff; font-weight: 600; font-size: 13px; white-space: nowrap;
+}
+.sponsor-badge {
+  display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 2px 7px; border-radius: 6px;
+  background: rgba(255,214,0,0.15); color: #FFD600; margin-left: 8px;
+}
+@media (max-width: 1023px) {
+  .ad-slot--sidebar { display: none; }   /* sidebar is desktop-only */
+}

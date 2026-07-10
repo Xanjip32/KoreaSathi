@@ -8,6 +8,8 @@ import { initModals } from './utils/modals.js';
 import { initTooltips } from './utils/tooltips.js';
 import { initTabs } from './utils/tabs.js';
 import { initAccordions } from './utils/accordions.js';
+import { initAnalytics } from './analytics.js';
+import { initAds } from './ads.js';
 
 async function loadPartials() {
   const isPagesPath = window.location.pathname.includes('/pages/');
@@ -53,6 +55,12 @@ document.addEventListener('DOMContentLoaded', async function () {
   initTooltips();
   initTabs();
   initAccordions();
+
+  // Analytics (GA4 if configured; Vercel Analytics is dashboard-enabled)
+  initAnalytics();
+
+  // Advertisement / sponsorship slots (all disabled by default)
+  initAds();
 
   // Initialize page-specific modules
   initPageModules();

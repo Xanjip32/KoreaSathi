@@ -6,7 +6,8 @@
     "dev": "concurrently \"npm run dev:css\" \"npm run dev:js\" \"npm run serve\"",
     "dev:css": "tailwindcss -i ./src/css/input.css -o ./dist/css/styles.css --watch",
     "dev:js": "esbuild src/js/main.js --bundle --outfile=dist/js/main.js --watch --format=esm --target=es2020",
-    "build": "npm run build:css && npm run build:js && npm run copy:assets",
+    "build": "npm run build:css && npm run build:js && npm run copy:assets && npm run build:sitemap",
+    "build:sitemap": "node scripts/build-sitemap.js",
     "build:css": "tailwindcss -i ./src/css/input.css -o ./dist/css/styles.css --minify",
     "build:js": "esbuild src/js/main.js --bundle --outfile=dist/js/main.js --minify --format=esm --target=es2020",
     "copy:assets": "node -e \"require('fs').cpSync('src/assets','dist/assets',{recursive:true}); require('fs').cpSync('src/partials','dist/partials',{recursive:true}); require('fs').cpSync('src/pages','dist/pages',{recursive:true}); require('fs').cpSync('src/index.html','dist/index.html');\"",
@@ -19,6 +20,7 @@
     "flowbite": "^4.0.2",
     "postcss": "^8.4.38",
     "serve": "^14.2.3",
+    "sharp": "^0.35.3",
     "tailwindcss": "^3.4.4"
   },
   "dependencies": {
