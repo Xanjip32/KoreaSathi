@@ -1,6 +1,16 @@
 import DOMPurify from 'dompurify';
 import { fetchPost, getTitle, getContent, getExcerpt, findPdfUrl, findVideoEmbed, formatDate, escapeHtml, downloadFile } from '../api.js';
 
+// Resolve a possibly-relative PDF URL to an absolute one. The Google Docs
+// Viewer (used to bypass X-Frame-Options) requires an absolute URL.
+function toAbsoluteUrl(url) {
+  try {
+    return new URL(url, window.location.origin).href;
+  } catch {
+    return url;
+  }
+}
+
 // Remove the raw WordPress media blocks (PDF file block + TikTok embed figure)
 // because we render those as clean media blocks above the article body.
 function stripEmbeddedMedia(html) {
@@ -118,13 +128,22 @@ export function initGuide() {
       // Build media block (PDF viewer + video) shown above the article body
       let mediaHtml = '';
       if (pdfUrl) {
+        // Many PDF hosts send X-Frame-Options / CSP frame-ancestors, which makes
+        // a direct <iframe src="pdfUrl"> show "This content is blocked". Proxying
+        // through Google Docs Viewer bypasses that framing restriction. We also
+        // keep a direct "Open" link as a reliable fallback.
+        const absPdfUrl = toAbsoluteUrl(pdfUrl);
+        const viewerSrc = `https://docs.google.com/viewer?url=${encodeURIComponent(absPdfUrl)}&embedded=true`;
         mediaHtml += `
           <div class="mb-8 rounded-2xl overflow-hidden border border-white/10 bg-white/5">
             <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
               <span class="inline-flex items-center gap-2 text-sm font-semibold text-white"><i class="fas fa-file-pdf text-red-400"></i> PDF Guide</span>
-              <a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener" download class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-300 hover:text-blue-200 transition-colors"><i class="fas fa-download"></i> Download</a>
+              <div class="flex items-center gap-3">
+                <a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-300 hover:text-blue-200 transition-colors"><i class="fas fa-external-link-alt"></i> Open</a>
+                <a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener" download class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-300 hover:text-blue-200 transition-colors"><i class="fas fa-download"></i> Download</a>
+              </div>
             </div>
-            <iframe src="${escapeHtml(pdfUrl)}#view=FitH" class="w-full" style="height:600px;border:0;" title="PDF Guide"></iframe>
+            <iframe src="${escapeHtml(viewerSrc)}" class="w-full" style="height:600px;border:0;" title="PDF Guide" loading="lazy"></iframe>
           </div>`;
       }
       if (video && video.platform === 'tiktok' && video.videoId) {

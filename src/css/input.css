@@ -197,23 +197,10 @@
   a { @apply transition-colors duration-150; }
   h1, h2, h3, h4, h5, h6 { @apply font-bold tracking-tight text-white; line-height: 1.1; }
   p { @apply text-[var(--fg-2)]; }
-  body::after {
-    content: "";
-    @apply fixed inset-0 pointer-events-none z-[9999] opacity-[0.015];
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 128px 128px;
-  }
-  ::selection { @apply bg-blue-500/20 text-[#0F172A]; }
-  :focus-visible { @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-white; }
-  img, picture, video, canvas, svg { @apply block max-w-full h-auto; }
-  a { @apply transition-colors duration-150; }
-  h1, h2, h3, h4, h5, h6 { @apply font-bold tracking-tight text-[#0F172A]; line-height: 1.1; }
-  p { @apply text-[var(--fg-2)]; }
 
   /* AOS-style scroll animations: only hide when JS is active, so content
-     is visible (and FCP happens) even if JS fails or is slow. Prevents CLS
-     and invisible-content flashes. */
+      is visible (and FCP happens) even if JS fails or is slow. Prevents CLS
+      and invisible-content flashes. */
   .js-anim [data-aos] { opacity: 0; }
   .js-anim [data-aos].aos-animate { opacity: 1; }
 }

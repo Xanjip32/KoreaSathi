@@ -98,13 +98,19 @@ export function renderYouTubeCard(videoId, title, date) {
 export function renderTikTokCard(videoId, oembedData, date) {
   const videoUrl = `https://www.tiktok.com/@${TIKTOK_USERNAME}/video/${videoId}`;
   const title = oembedData?.title || 'TikTok Video';
+  const thumbnail = oembedData?.thumbnail_url || '';
 
-  const embedHtml = oembedData?.html || '';
+  const poster = thumbnail
+    ? `<img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(title)}" class="absolute inset-0 w-full h-full object-cover" loading="lazy">`
+    : `<div class="absolute inset-0 flex items-center justify-center text-white/20"><i class="fab fa-tiktok text-4xl"></i></div>`;
 
   return `
     <article class="group glass-card overflow-hidden p-2">
-      <div class="relative rounded-xl overflow-hidden bg-dark-card">
-        ${embedHtml}
+      <div class="relative w-full pb-[177.78%] rounded-xl overflow-hidden bg-dark-card cursor-pointer tiktok-embed-card" data-tiktok-id="${escapeHtml(videoId)}" data-tiktok-url="${escapeHtml(videoUrl)}" role="button" tabindex="0" aria-label="Play TikTok video: ${escapeHtml(title)}">
+        ${poster}
+        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <span class="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center text-black text-xl"><i class="fas fa-play"></i></span>
+        </div>
       </div>
       <div class="px-4 pb-4 pt-3">
         <h3 class="text-[13px] font-bold text-white mb-1.5 line-clamp-2 group-hover:text-primary transition-colors">${escapeHtml(title)}</h3>
@@ -117,6 +123,26 @@ export function renderTikTokCard(videoId, oembedData, date) {
       </div>
     </article>
   `;
+}
+
+function handleTikTokCardClick(card) {
+  const id = card.dataset.tiktokId;
+  if (!id || card.dataset.loaded === '1') return;
+  card.dataset.loaded = '1';
+  card.style.cursor = 'default';
+  card.innerHTML = `<iframe src="https://www.tiktok.com/embed/v2/${escapeHtml(id)}" class="absolute inset-0 w-full h-full" style="border:0" allowfullscreen loading="lazy" title="TikTok video"></iframe>`;
+}
+
+export function attachTikTokCardListeners(root = document) {
+  root.addEventListener('click', (e) => {
+    const card = e.target.closest('.tiktok-embed-card');
+    if (card) { e.preventDefault(); handleTikTokCardClick(card); }
+  });
+  root.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const card = e.target.closest('.tiktok-embed-card');
+    if (card) { e.preventDefault(); handleTikTokCardClick(card); }
+  });
 }
 
 export function renderTikTokCardSkeleton() {
@@ -157,4 +183,5 @@ export function lazyLoadVideos(container) {
     });
   }, { rootMargin: '300px' });
   container.querySelectorAll('.lazy-video[data-src]').forEach(el => observer.observe(el));
+  attachTikTokCardListeners(container);
 }
