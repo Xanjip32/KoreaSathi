@@ -135,6 +135,12 @@ export function initGuide() {
         // reliable fallback.
         const absPdfUrl = toAbsoluteUrl(pdfUrl);
         const proxySrc = `/pdf-proxy?url=${encodeURIComponent(absPdfUrl)}`;
+        // Fallback chain if the same-origin proxy iframe fails to render the PDF
+        // (e.g. blocked, network error, or non-PDF response): try the Google Docs
+        // viewer, then finally a direct download link. This guarantees the user
+        // always gets the PDF instead of a hard "This content is blocked" message.
+        const gdocsSrc = `https://docs.google.com/viewer?url=${encodeURIComponent(absPdfUrl)}&embedded=true`;
+        const fallbackId = 'pdfFallback_' + Math.random().toString(36).slice(2, 9);
         mediaHtml += `
           <div class="mb-8 rounded-2xl overflow-hidden border border-white/10 bg-white/5">
             <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
@@ -144,7 +150,10 @@ export function initGuide() {
                 <a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener" download class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-300 hover:text-blue-200 transition-colors"><i class="fas fa-download"></i> Download</a>
               </div>
             </div>
-            <iframe src="${escapeHtml(proxySrc)}" class="w-full" style="height:600px;border:0;" title="PDF Guide" loading="lazy"></iframe>
+            <iframe id="${fallbackId}" src="${escapeHtml(proxySrc)}" class="w-full" style="height:600px;border:0;" title="PDF Guide" loading="lazy"
+              onload="if(window.__pdfFallbackApplied!=='${fallbackId}'){try{if(this.contentDocument&&this.contentDocument.body&&/blocked/i.test(this.contentDocument.body.innerText)){window.__pdfFallbackApplied='${fallbackId}';this.onload=null;this.src='${escapeHtml(gdocsSrc)}';}}catch(e){}}"
+              onerror="if(window.__pdfFallbackApplied!=='${fallbackId}'){window.__pdfFallbackApplied='${fallbackId}';this.onerror=null;this.src='${escapeHtml(gdocsSrc)}';}"></iframe>
+            <noscript><a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener" class="block text-center text-xs font-bold text-blue-300 py-3">View PDF</a></noscript>
           </div>`;
       }
       if (video && video.platform === 'tiktok' && video.videoId) {
