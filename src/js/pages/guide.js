@@ -129,11 +129,12 @@ export function initGuide() {
       let mediaHtml = '';
       if (pdfUrl) {
         // Many PDF hosts send X-Frame-Options / CSP frame-ancestors, which makes
-        // a direct <iframe src="pdfUrl"> show "This content is blocked". Proxying
-        // through Google Docs Viewer bypasses that framing restriction. We also
-        // keep a direct "Open" link as a reliable fallback.
+        // a direct <iframe src="pdfUrl"> show "This content is blocked". We proxy
+        // the PDF through our OWN same-origin endpoint (/pdf-proxy) so no external
+        // framing policy can block it. We also keep a direct "Open" link as a
+        // reliable fallback.
         const absPdfUrl = toAbsoluteUrl(pdfUrl);
-        const viewerSrc = `https://docs.google.com/viewer?url=${encodeURIComponent(absPdfUrl)}&embedded=true`;
+        const proxySrc = `/pdf-proxy?url=${encodeURIComponent(absPdfUrl)}`;
         mediaHtml += `
           <div class="mb-8 rounded-2xl overflow-hidden border border-white/10 bg-white/5">
             <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
@@ -143,7 +144,7 @@ export function initGuide() {
                 <a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener" download class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-300 hover:text-blue-200 transition-colors"><i class="fas fa-download"></i> Download</a>
               </div>
             </div>
-            <iframe src="${escapeHtml(viewerSrc)}" class="w-full" style="height:600px;border:0;" title="PDF Guide" loading="lazy"></iframe>
+            <iframe src="${escapeHtml(proxySrc)}" class="w-full" style="height:600px;border:0;" title="PDF Guide" loading="lazy"></iframe>
           </div>`;
       }
       if (video && video.platform === 'tiktok' && video.videoId) {
